@@ -1,0 +1,50 @@
+{
+    "random_seed": 42,
+    "total_samples": 4515,
+    "split_sizes": {
+        "train": 3160,
+        "validation": 677,
+        "test": 678
+    },
+    "split_proportions": {
+        "train": 69.99,
+        "validation": 14.99,
+        "test": 15.02
+    },
+    "class_distributions": {
+        "train": {
+            "Normal": 2065,
+            "Elevated Risk": 1095
+        },
+        "validation": {
+            "Normal": 443,
+            "Elevated Risk": 234
+        },
+        "test": {
+            "Normal": 443,
+            "Elevated Risk": 235
+        }
+    },
+    "exclusions_applied": {
+        "Target Variable": [
+            "risk_label"
+        ],
+        "Survey Design Variables": [
+            "WTINT2YR",
+            "WTMEC2YR",
+            "SDMVPSU",
+            "SDMVSTRA"
+        ],
+        "Pediatric / 100% Missing Features": [
+            "RIDAGEMN",
+            "BMXRECUM",
+            "BMIRECUM",
+            "BMXHEAD",
+            "BMIHEAD",
+            "BMIHT",
+            "BMIARML",
+            "BMIARMC",
+            "BMILEG"
+        ]
+    }
+}
