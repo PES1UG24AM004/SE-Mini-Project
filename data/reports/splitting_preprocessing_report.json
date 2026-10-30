@@ -1,0 +1,23 @@
+{
+    "numeric_features_count": 52,
+    "categorical_features_count": 0,
+    "transformed_feature_count": 52,
+    "preprocessor_steps": {
+        "numeric": [
+            "median_imputation",
+            "standard_scaler"
+        ],
+        "categorical": [
+            "most_frequent_imputation",
+            "onehot_encoder"
+        ]
+    },
+    "output_artifacts": {
+        "train_csv": "data\\splits\\train.csv",
+        "validation_csv": "data\\splits\\validation.csv",
+        "test_csv": "data\\splits\\test.csv",
+        "preprocessor_model": "models\\preprocessing\\preprocessor.joblib",
+        "split_manifest": "data\\splits\\split_manifest.json",
+        "feature_names": "data\\reports\\transformed_feature_names.json"
+    }
+}

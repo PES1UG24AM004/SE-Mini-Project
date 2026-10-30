@@ -1,0 +1,35 @@
+{
+    "project": "CodeCraft - Early Metabolic Risk Detection",
+    "source_files": {
+        "demographics": 9254,
+        "body_measurements": 8704,
+        "glycohemoglobin": 6401
+    },
+    "merged_participants_count": 6401,
+    "adult_participants_count": 5533,
+    "excluded_missing_hba1c": 272,
+    "excluded_diabetes_range": 746,
+    "final_analysis_sample_size": 4515,
+    "class_distribution": {
+        "Normal": 2951,
+        "Elevated Risk": 1564
+    },
+    "class_percentages": {
+        "Normal": 65.35991140642304,
+        "Elevated Risk": 34.64008859357697
+    },
+    "num_predictors": 65,
+    "survey_variables_retained": [
+        "WTINT2YR",
+        "WTMEC2YR",
+        "SDMVPSU",
+        "SDMVSTRA"
+    ],
+    "output_files": {
+        "merged_adults": "data\\processed\\nhanes_merged_adults.csv",
+        "model_ready": "data\\processed\\nhanes_model_ready.csv",
+        "missing_values_report": "data\\reports\\missing_values_report.csv",
+        "class_distribution_report": "data\\reports\\class_distribution.csv",
+        "column_dictionary": "data\\reports\\column_dictionary.csv"
+    }
+}
