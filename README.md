@@ -35,6 +35,7 @@ The application adopts a clean, layered architecture with modular separation of 
 ├── README.md            # Setup guide, architecture, benchmark results, walkthrough
 ├── requirements.txt     # Pinned Python package dependencies
 ├── run_server.py        # Single-command startup entry point (127.0.0.1:8000)
+├── .env.example         # Template for environment configuration
 ├── artifacts/           # Browser test verification, responsive previews & UI checks
 │   ├── browser-tests/   # Automated Chrome test verification screenshots
 │   ├── responsive-previews/ # Multi-viewport layout previews (mobile, tablet, desktop)
@@ -75,6 +76,9 @@ The application adopts a clean, layered architecture with modular separation of 
 │   ├── reference_results.json # Verified notebook baseline reference metrics
 │   ├── shared_feature_set.json # Canonical 5-feature metadata & MI rankings
 │   └── runs/            # Historical benchmark execution records
+├── scripts/             # End-to-end browser regression & viewport verification scripts
+│   ├── check_viewports.py # Multi-viewport responsiveness verification
+│   └── test_chrome_regression_checklist.py # 25-point Chrome regression test script
 └── tests/               # Automated test suite (TC-01 through TC-22 acceptance tests)
     └── test_all_requirements.py
 ```
@@ -175,9 +179,13 @@ The repository contains an automated test suite verifying all 22 Software Requir
 
 Additionally, end-to-end browser and UI responsiveness tests can be executed via Selenium:
 ```powershell
-.\.venv\Scripts\python scratch/test_repaired_frontend.py
+# 25-Point Google Chrome regression checklist (saves screenshots to artifacts/browser-tests/):
+.\.venv\Scripts\python scripts/test_chrome_regression_checklist.py
+
+# Multi-viewport responsiveness verification (1440px, 1024px, 768px, 390px, 360px):
+.\.venv\Scripts\python scripts/check_viewports.py
 ```
-This verifies 0 console errors, tab switching, direct bookmark loading, browser history back/forward navigation, theme toggle persistence, and exports screenshots to `artifacts/ui-checks/`.
+This verifies 0 console errors, tab switching, direct bookmark loading, browser history back/forward navigation, theme toggle persistence, and exports screenshots to `artifacts/browser-tests/` and `artifacts/responsive-previews/`.
 
 ### Verified Test Cases Summary:
 - **TC-01 to TC-03:** Valid import, missing target rejection, invalid type/range/single-class error logging.
