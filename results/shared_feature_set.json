@@ -1,0 +1,220 @@
+{
+  "selected_features": [
+    "RIDAGEYR",
+    "DMDHRAGZ",
+    "DMDHHSZE",
+    "BMXWAIST",
+    "BMXBMI"
+  ],
+  "numeric_features": [
+    "RIDAGEYR",
+    "DMDHHSZE",
+    "BMXWAIST",
+    "BMXBMI"
+  ],
+  "categorical_features": [
+    "DMDHRAGZ"
+  ],
+  "transformed_dim": 8,
+  "mi_ranking": [
+    {
+      "feature": "RIDAGEYR",
+      "mutual_info": 0.07423,
+      "type": "numeric"
+    },
+    {
+      "feature": "DMDHRAGZ",
+      "mutual_info": 0.03605,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDHHSZE",
+      "mutual_info": 0.03402,
+      "type": "numeric"
+    },
+    {
+      "feature": "BMXWAIST",
+      "mutual_info": 0.03173,
+      "type": "numeric"
+    },
+    {
+      "feature": "BMXBMI",
+      "mutual_info": 0.02021,
+      "type": "numeric"
+    },
+    {
+      "feature": "DMDMARTL",
+      "mutual_info": 0.01603,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDHHSZB",
+      "mutual_info": 0.01141,
+      "type": "numeric"
+    },
+    {
+      "feature": "DMDHHSZA",
+      "mutual_info": 0.01131,
+      "type": "numeric"
+    },
+    {
+      "feature": "BMXHT",
+      "mutual_info": 0.01021,
+      "type": "numeric"
+    },
+    {
+      "feature": "BMXARMC",
+      "mutual_info": 0.00905,
+      "type": "numeric"
+    },
+    {
+      "feature": "RIDRETH3",
+      "mutual_info": 0.00838,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDHHSIZ",
+      "mutual_info": 0.00795,
+      "type": "categorical"
+    },
+    {
+      "feature": "BMXHIP",
+      "mutual_info": 0.00792,
+      "type": "numeric"
+    },
+    {
+      "feature": "RIDRETH1",
+      "mutual_info": 0.0079,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDFMSIZ",
+      "mutual_info": 0.00722,
+      "type": "categorical"
+    },
+    {
+      "feature": "BMXLEG",
+      "mutual_info": 0.00706,
+      "type": "numeric"
+    },
+    {
+      "feature": "DMDEDUC2",
+      "mutual_info": 0.00492,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDHRMAZ",
+      "mutual_info": 0.00451,
+      "type": "categorical"
+    },
+    {
+      "feature": "INDFMPIR",
+      "mutual_info": 0.00324,
+      "type": "numeric"
+    },
+    {
+      "feature": "DMQMILIZ",
+      "mutual_info": 0.00278,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDBORN4",
+      "mutual_info": 0.00264,
+      "type": "categorical"
+    },
+    {
+      "feature": "MIALANG",
+      "mutual_info": 0.00195,
+      "type": "categorical"
+    },
+    {
+      "feature": "SIALANG",
+      "mutual_info": 0.00115,
+      "type": "categorical"
+    },
+    {
+      "feature": "AIALANGA",
+      "mutual_info": 0.00113,
+      "type": "categorical"
+    },
+    {
+      "feature": "SIAPROXY",
+      "mutual_info": 0.00089,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDHREDZ",
+      "mutual_info": 0.00072,
+      "type": "categorical"
+    },
+    {
+      "feature": "SIAINTRP",
+      "mutual_info": 0.0007,
+      "type": "categorical"
+    },
+    {
+      "feature": "FIALANG",
+      "mutual_info": 0.00057,
+      "type": "categorical"
+    },
+    {
+      "feature": "RIAGENDR",
+      "mutual_info": 0.00051,
+      "type": "categorical"
+    },
+    {
+      "feature": "BMXWT",
+      "mutual_info": 0.00047,
+      "type": "numeric"
+    },
+    {
+      "feature": "MIAPROXY",
+      "mutual_info": 0.0003,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDCITZN",
+      "mutual_info": 0.0002,
+      "type": "categorical"
+    },
+    {
+      "feature": "MIAINTRP",
+      "mutual_info": 0.00018,
+      "type": "categorical"
+    },
+    {
+      "feature": "FIAPROXY",
+      "mutual_info": 6e-05,
+      "type": "categorical"
+    },
+    {
+      "feature": "DMDHRGND",
+      "mutual_info": 2e-05,
+      "type": "categorical"
+    },
+    {
+      "feature": "FIAINTRP",
+      "mutual_info": 2e-05,
+      "type": "categorical"
+    },
+    {
+      "feature": "INDHHIN2",
+      "mutual_info": 0.0,
+      "type": "numeric"
+    },
+    {
+      "feature": "INDFMIN2",
+      "mutual_info": 0.0,
+      "type": "numeric"
+    },
+    {
+      "feature": "BMXARML",
+      "mutual_info": 0.0,
+      "type": "numeric"
+    }
+  ],
+  "split_hash": "d1419b74e6b90c7e93c051e0f497ba7d577c76b798214e33fa87a1b53ba2cdde",
+  "seed": 42,
+  "dataset_version": "nhanes-2017-2018-v1",
+  "created": "2026-10-23T21:31:15.380023+00:00"
+}

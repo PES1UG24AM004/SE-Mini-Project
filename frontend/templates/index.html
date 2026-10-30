@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeCraft — Early Metabolic Risk Detection Website</title>
+  <script>
+    // Immediate early theme initialization to prevent flash of unstyled theme
+    (function() {
+      try {
+        const saved = localStorage.getItem('codecraft-theme');
+        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved ? saved : (systemDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Persistent Research Disclaimer Banner (Strict Grayscale) -->
+  <div class="disclaimer-banner" role="alert">
+    <div>
+      <span class="disclaimer-badge">Academic Research</span>
+      <strong>Notice:</strong> Research/educational use only. Not a diagnosis or medical advice. Cross-sectional classification within NHANES 2017–2018; not a prediction of future disease.
+    </div>
+    <div style="font-size: 11px; opacity: 0.85; white-space: nowrap;">
+      CodeCraft | PES University
+    </div>
+  </div>
+
+  <!-- Header & Semantic Accessible Navigation Shell -->
+  <header class="app-header">
+    <a href="#overview" class="brand" aria-label="CodeCraft Home">
+      <div class="brand-icon" aria-hidden="true">&Sigma;</div>
+      <div>
+        <div class="brand-title">CodeCraft Metabolic Risk Platform</div>
+        <div class="brand-subtitle">Classical ML vs Deep Learning vs Quantum ML Benchmark</div>
+      </div>
+    </a>
+    
+    <div class="nav-container">
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links" id="nav-list" role="tablist">
+          <li><a href="#overview" id="nav-overview" class="nav-link active" data-view="overview" role="tab" aria-selected="true" aria-controls="view-overview">Overview</a></li>
+          <li><a href="#dataset" id="nav-dataset" class="nav-link" data-view="dataset" role="tab" aria-selected="false" aria-controls="view-dataset">Dataset</a></li>
+          <li><a href="#run" id="nav-run" class="nav-link" data-view="run" role="tab" aria-selected="false" aria-controls="view-run">Run Models</a></li>
+          <li><a href="#comparison" id="nav-comparison" class="nav-link" data-view="comparison" role="tab" aria-selected="false" aria-controls="view-comparison">Comparison</a></li>
+          <li><a href="#details" id="nav-details" class="nav-link" data-view="details" role="tab" aria-selected="false" aria-controls="view-details">Model Details</a></li>
+          <li><a href="#predict" id="nav-predict" class="nav-link" data-view="predict" role="tab" aria-selected="false" aria-controls="view-predict">Single Record</a></li>
+          <li><a href="#export" id="nav-export" class="nav-link" data-view="export" role="tab" aria-selected="false" aria-controls="view-export">Export</a></li>
+        </ul>
+      </nav>
+
+      <!-- Theme Switcher Button -->
+      <button type="button" id="btn-theme-toggle" class="btn-theme-toggle" aria-label="Switch between light and dark mode">
+        Theme: <span id="theme-name">Light</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- VIEW 1: OVERVIEW -->
+    <section id="view-overview" class="view-panel active" role="tabpanel" aria-labelledby="nav-overview">
+      <!-- Scientific Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-header">
+          <div>
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap;">
+              <span class="status-pill status-completed">Cohort: NHANES 2017–2018</span>
+              <span class="status-pill status-completed">Dataset ID: nhanes-2017-2018-v1</span>
+              <span class="status-pill status-completed">Offline Verified</span>
+            </div>
+            <h1 class="hero-title">Early Metabolic Risk Detection Benchmark</h1>
+            <p class="hero-description">
+              Rigorous cross-sectional benchmarking of <strong>Classical Machine Learning (HistGradientBoosting)</strong>,
+              <strong>Deep Learning (PyTorch MLP)</strong>, and <strong>Quantum Machine Learning (PennyLane VQC Simulator)</strong>
+              on standardized biometric indicators from the NHANES 2017–2018 survey cycle.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 Primary Scientific Stat Boxes -->
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="stat-box">
+            <div class="stat-label">Total Cohort Partition</div>
+            <div class="stat-val">4,515</div>
+            <div class="stat-sub">3,160 train / 677 val / 678 test</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Positive Class Definition</div>
+            <div class="stat-val" style="font-size: 15px; margin-top: 6px;">Elevated Risk</div>
+            <div class="stat-sub">5.7% &le; HbA1c &lt; 6.5% (Pre-diabetes)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Shared Predictors</div>
+            <div class="stat-val">8 Dim</div>
+            <div class="stat-sub">5 raw features &rarr; 8 transformed columns</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Ranking Objective</div>
+            <div class="stat-val" style="font-size: 14px; margin-top: 6px;">Sensitivity @ Spec &ge; 0.70</div>
+            <div class="stat-sub">ROC-AUC breaks ties on held-out test</div>
+          </div>
+        </div>
+
+        <!-- Quick Jump Navigation -->
+        <div class="quick-nav-grid">
+          <a href="#comparison" class="quick-nav-card" aria-label="Navigate to side-by-side comparison">
+            <div class="quick-nav-icon">&boxbox;</div>
+            <div class="quick-nav-text">
+              <strong>Side-by-Side Comparison</strong>
+              <small>Inspect test metrics, ROC curves, and confusion matrices</small>
+            </div>
+          </a>
+          <a href="#run" class="quick-nav-card" aria-label="Navigate to model execution">
+            <div class="quick-nav-icon">&blacktriangleright;</div>
+            <div class="quick-nav-text">
+              <strong>Execute Pipelines</strong>
+              <small>Train ML, DL, and QML models with multi-seed repeats</small>
+            </div>
+          </a>
+          <a href="#dataset" class="quick-nav-card" aria-label="Navigate to dataset inspection and validation">
+            <div class="quick-nav-icon">&check;</div>
+            <div class="quick-nav-text">
+              <strong>Inspect &amp; Validate Cohort</strong>
+              <small>Review split SHA-256 hashes and mutual information</small>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Evaluated Model Paradigms Detailed Card -->
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Evaluated Model Paradigms &amp; Architecture</h2>
+            <div class="card-subtitle">Identical data partitions, feature transformers, and threshold tuning protocols</div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="lab-card interactive-card" style="margin-bottom: 0; background: var(--surface-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="model-tag ml">● Classical ML</div>
+              <span style="font-size: 11px; color: var(--text-secondary); font-family: var(--font-mono);">scikit-learn</span>
+            </div>
+            <h3 style="margin: 10px 0 6px; font-size: 14.5px; font-weight: 700;">HistGradientBoosting</h3>
+            <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.55;">
+              Histogram-based gradient boosted decision trees with balanced sample weights. Hyperparameters selected via 5-fold cross-validation on training data only.
+            </p>
+          </div>
+
+          <div class="lab-card interactive-card" style="margin-bottom: 0; background: var(--surface-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="model-tag dl">■ Deep Learning</div>
+              <span style="font-size: 11px; color: var(--text-secondary); font-family: var(--font-mono);">PyTorch 2.4</span>
+            </div>
+            <h3 style="margin: 10px 0 6px; font-size: 14.5px; font-weight: 700;">PyTorch Feed-Forward MLP</h3>
+            <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.55;">
+              Multi-layer perceptron with hidden layers [64, 32], dropout (0.3), Adam optimizer, positive class weighting, and early stopping on validation loss.
+            </p>
+          </div>
+
+          <div class="lab-card interactive-card" style="margin-bottom: 0; background: var(--surface-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="model-tag qml">◆ Quantum ML</div>
+              <span style="font-size: 11px; color: var(--text-secondary); font-family: var(--font-mono);">PennyLane 0.38</span>
+            </div>
+            <h3 style="margin: 10px 0 6px; font-size: 14.5px; font-weight: 700;">PennyLane VQC Simulator</h3>
+            <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.55;">
+              8-qubit variational quantum classifier on <code>default.qubit</code> simulator with angle embedding in [0, &pi;], strongly entangling layers, and classical readout.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: DATASET -->
+    <section id="view-dataset" class="view-panel" role="tabpanel" aria-labelledby="nav-dataset">
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Dataset Inspection &amp; Schema Validation</h2>
+            <div class="card-subtitle">NHANES 2017–2018 prepared cohort schema, partition counts, and data hygiene</div>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-validate-dataset">Run Live Validation</button>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 16px;">
+          <div class="stat-box">
+            <div class="stat-label">Prepared Split Rows</div>
+            <div class="stat-val" id="ds-rows">4,515</div>
+            <div class="stat-sub">Fixed 70/15/15 partition (3,160 train / 677 val / 678 test)</div>
+            <div class="split-distribution-bar" title="70% Train, 15% Val, 15% Test">
+              <div class="split-train"></div>
+              <div class="split-val"></div>
+              <div class="split-test"></div>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Total Columns</div>
+            <div class="stat-val" id="ds-cols">53</div>
+            <div class="stat-sub">52 candidate predictors + 1 target (<code>risk_label</code>)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Prevalence (Elevated Risk)</div>
+            <div class="stat-val" id="ds-prev">34.7%</div>
+            <div class="stat-sub">1,564 elevated / 2,951 normal (natural unweighted)</div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 13px; font-weight: 700; margin-top: 18px;">Validation Status &amp; Integrity</h3>
+        <div id="validation-feedback" style="background: var(--surface-secondary); padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-top: 8px;">
+          <div style="font-weight: 650;">&check; Fixed trio files verified (train.csv, validation.csv, test.csv)</div>
+          <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; font-family: var(--font-mono);">
+            Split SHA-256 Hash: <code>d1419b74e6b90c7e93c051e0f497ba7d577c76b798214e33fa87a1b53ba2cdde</code>
+          </div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+            Target: <code>risk_label</code> | No survey design/identifier leakage detected.
+          </div>
+        </div>
+
+        <h3 style="font-size: 13px; font-weight: 700; margin-top: 22px;">Shared 5 Raw Predictors (8 Transformed Columns)</h3>
+        <div class="data-table-wrapper">
+          <table class="lab-table">
+            <thead>
+              <tr>
+                <th>Feature Code</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Preprocessing Pipeline</th>
+                <th>Mutual Information Rank</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>RIDAGEYR</code></td>
+                <td>Participant age in years</td>
+                <td><span class="status-pill status-completed">Numeric</span></td>
+                <td>SimpleImputer(median) + StandardScaler()</td>
+                <td><strong>Rank 1</strong> (0.0742)</td>
+              </tr>
+              <tr>
+                <td><code>DMDHRAGZ</code></td>
+                <td>Household reference person age category</td>
+                <td><span class="status-pill status-completed">Categorical</span></td>
+                <td>SimpleImputer(mode) + OneHotEncoder(drop='if_binary') [4 cols]</td>
+                <td><strong>Rank 2</strong> (0.0361)</td>
+              </tr>
+              <tr>
+                <td><code>DMDHHSZE</code></td>
+                <td>Household size (number of individuals)</td>
+                <td><span class="status-pill status-completed">Numeric</span></td>
+                <td>SimpleImputer(median) + StandardScaler()</td>
+                <td><strong>Rank 3</strong> (0.0340)</td>
+              </tr>
+              <tr>
+                <td><code>BMXWAIST</code></td>
+                <td>Waist circumference (cm)</td>
+                <td><span class="status-pill status-completed">Numeric</span></td>
+                <td>SimpleImputer(median) + StandardScaler()</td>
+                <td><strong>Rank 4</strong> (0.0317)</td>
+              </tr>
+              <tr>
+                <td><code>BMXBMI</code></td>
+                <td>Body Mass Index (kg/m&sup2;)</td>
+                <td><span class="status-pill status-completed">Numeric</span></td>
+                <td>SimpleImputer(median) + StandardScaler()</td>
+                <td><strong>Rank 5</strong> (0.0202)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 22px; padding: 16px 20px; border: 1px dashed var(--border); border-radius: var(--radius-sm); background: var(--surface-secondary);">
+          <h4 style="margin: 0 0 6px; font-size: 13px; font-weight: 700;">Optional Custom CSV Upload (Max 50 MB)</h4>
+          <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 12px;">
+            Upload an eligible prepared NHANES CSV to validate schema and create a reproducible 70/15/15 stratified split.
+          </p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <input type="file" id="custom-csv-input" accept=".csv" class="form-control" style="max-width: 380px;">
+            <button type="button" class="btn btn-outline btn-sm" id="btn-upload-validate">Upload &amp; Validate</button>
+          </div>
+          <div id="upload-status-text" style="font-size: 12px; margin-top: 8px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: RUN MODELS -->
+    <section id="view-run" class="view-panel" role="tabpanel" aria-labelledby="nav-run">
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Run Model Pipelines</h2>
+            <div class="card-subtitle">Train models on training split, optimize threshold on validation, and evaluate on held-out test</div>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-start-run">Launch Selected Models</button>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 20px;">
+          <div>
+            <label class="form-label">Model Families to Execute</label>
+            <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--surface-secondary); padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <input type="checkbox" id="run-check-ml" checked> <strong>● ML</strong> (Classical)
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--surface-secondary); padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <input type="checkbox" id="run-check-dl" checked> <strong>■ DL</strong> (PyTorch MLP)
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--surface-secondary); padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <input type="checkbox" id="run-check-qml" checked> <strong>◆ QML</strong> (PennyLane Simulator)
+              </label>
+            </div>
+            <div class="form-hint">Each model family runs inside an isolated adapter. A failure in one will not interrupt others.</div>
+          </div>
+
+          <div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 140px;">
+                <label class="form-label" for="run-seed">Random Seed</label>
+                <input type="number" id="run-seed" class="form-control" value="42">
+              </div>
+              <div style="flex: 1.5; min-width: 180px;">
+                <label class="form-label" for="run-mode">Multi-Seed Repeats</label>
+                <select id="run-mode" class="form-control">
+                  <option value="multi" selected>5 Seeds (42–46, Mean &plusmn; SD)</option>
+                  <option value="single">Single Seed (Fast Demonstration)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-hint">Multi-seed repeats measure seed variation on the fixed split.</div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 13px; font-weight: 700; margin-top: 24px;">Execution Monitoring</h3>
+        <div id="run-monitor-cards" class="grid-3" style="margin-top: 12px;">
+          <!-- ML Status Card -->
+          <div class="lab-card" id="card-status-ml" style="margin-bottom: 0; background: var(--surface-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="model-tag ml">● ML HistGradientBoosting</div>
+              <span class="status-pill status-completed" id="pill-ml">Ready</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="prog-ml"></div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 10px; display: flex; justify-content: space-between;">
+              <span id="runtime-ml">Runtime: --</span>
+              <span id="mem-ml">Peak Mem: --</span>
+            </div>
+            <div id="err-ml" class="form-error" style="display: none;"></div>
+          </div>
+
+          <!-- DL Status Card -->
+          <div class="lab-card" id="card-status-dl" style="margin-bottom: 0; background: var(--surface-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="model-tag dl">■ DL PyTorch MLP</div>
+              <span class="status-pill status-completed" id="pill-dl">Ready</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="prog-dl"></div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 10px; display: flex; justify-content: space-between;">
+              <span id="runtime-dl">Runtime: --</span>
+              <span id="mem-dl">Peak Mem: --</span>
+            </div>
+            <div id="err-dl" class="form-error" style="display: none;"></div>
+          </div>
+
+          <!-- QML Status Card -->
+          <div class="lab-card" id="card-status-qml" style="margin-bottom: 0; background: var(--surface-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="model-tag qml">◆ QML PennyLane Simulator</div>
+              <span class="status-pill status-completed" id="pill-qml">Ready</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="prog-qml"></div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 10px; display: flex; justify-content: space-between;">
+              <span id="runtime-qml">Runtime: --</span>
+              <span id="mem-qml">Peak Mem: --</span>
+            </div>
+            <div id="err-qml" class="form-error" style="display: none;"></div>
+          </div>
+        </div>
+
+        <div id="run-active-banner" style="display: none; margin-top: 16px; padding: 12px 16px; background: var(--surface-secondary); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); font-size: 12px;">
+          Run in progress... System acknowledged request within 2 seconds. Polling real-time backend status.
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: COMPARISON (PRIMARY VIEW) -->
+    <section id="view-comparison" class="view-panel" role="tabpanel" aria-labelledby="nav-comparison">
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Side-by-Side Model Comparison</h2>
+            <div class="card-subtitle">Held-out test split evaluation (N = 678, Prevalence = 0.347, Unweighted)</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <label for="comparison-run-selector" style="font-size: 12px; font-weight: 700;">Selected Run:</label>
+            <select id="comparison-run-selector" class="form-control" style="width: auto; font-size: 12px; padding: 5px 10px;">
+              <option value="reference_baseline">Imported Notebook Reference (Baseline)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Experiment Context Summary Strip -->
+        <div class="grid-4" style="margin-bottom: 20px; background: var(--surface-secondary); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+          <div>
+            <div class="stat-label">Source &amp; Provenance</div>
+            <div id="comp-source" style="font-weight: 700; font-size: 13px; margin-top: 3px;">Imported Notebook Reference</div>
+          </div>
+          <div>
+            <div class="stat-label">Primary Ranking Objective</div>
+            <div style="font-weight: 700; font-size: 13px; margin-top: 3px;">Sensitivity @ Spec &ge; 0.70</div>
+          </div>
+          <div>
+            <div class="stat-label">Positive Class Definition</div>
+            <div style="font-weight: 700; font-size: 13px; margin-top: 3px;">Elevated Risk (5.7% &le; HbA1c &lt; 6.5%)</div>
+          </div>
+          <div>
+            <div class="stat-label">Threshold Protocol</div>
+            <div style="font-weight: 700; font-size: 13px; margin-top: 3px;">Optimized on Val, Applied Once to Test</div>
+          </div>
+        </div>
+
+        <!-- Aligned 3-Family Comparison Table -->
+        <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">Test Set Metric Comparison (Side-by-Side)</h3>
+        <div class="data-table-wrapper">
+          <table class="lab-table" id="comparison-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">Metric / Property</th>
+                <th style="width: 26%;"><span class="model-tag ml">● Classical ML</span><br><small style="font-weight: normal; color: var(--text-secondary);">HistGradientBoosting</small></th>
+                <th style="width: 26%;"><span class="model-tag dl">■ Deep Learning</span><br><small style="font-weight: normal; color: var(--text-secondary);">PyTorch Feed-Forward MLP</small></th>
+                <th style="width: 26%;"><span class="model-tag qml">◆ Quantum ML</span><br><small style="font-weight: normal; color: var(--text-secondary);">PennyLane VQC Simulator</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="primary-metric-row">
+                <td><strong>Sensitivity (Primary)</strong><br><small style="color: var(--text-secondary);">TPR @ val-chosen threshold</small></td>
+                <td id="m-sens-ml" class="tabular-nums">0.677 <small>[0.620, 0.739]</small></td>
+                <td id="m-sens-dl" class="tabular-nums">0.661 &plusmn; 0.010</td>
+                <td id="m-sens-qml" class="tabular-nums">0.647 &plusmn; 0.040</td>
+              </tr>
+              <tr>
+                <td><strong>Specificity</strong><br><small style="color: var(--text-secondary);">TNR @ val-chosen threshold</small></td>
+                <td id="m-spec-ml" class="tabular-nums">0.729 <small>[0.686, 0.769]</small></td>
+                <td id="m-spec-dl" class="tabular-nums">0.719 &plusmn; 0.005</td>
+                <td id="m-spec-qml" class="tabular-nums">0.702 &plusmn; 0.013</td>
+              </tr>
+              <tr>
+                <td><strong>Precision</strong><br><small style="color: var(--text-secondary);">Positive Predictive Value</small></td>
+                <td id="m-prec-ml" class="tabular-nums">0.570</td>
+                <td id="m-prec-dl" class="tabular-nums">0.555 &plusmn; 0.002</td>
+                <td id="m-prec-qml" class="tabular-nums">0.535 &plusmn; 0.008</td>
+              </tr>
+              <tr>
+                <td><strong>F1 Score</strong><br><small style="color: var(--text-secondary);">Harmonic mean of Prec &amp; Sens</small></td>
+                <td id="m-f1-ml" class="tabular-nums">0.619</td>
+                <td id="m-f1-dl" class="tabular-nums">0.604 &plusmn; 0.004</td>
+                <td id="m-f1-qml" class="tabular-nums">0.585 &plusmn; 0.020</td>
+              </tr>
+              <tr>
+                <td><strong>Accuracy</strong><br><small style="color: var(--text-secondary);">(TP + TN) / Total</small></td>
+                <td id="m-acc-ml" class="tabular-nums">0.711</td>
+                <td id="m-acc-dl" class="tabular-nums">0.699 &plusmn; 0.001</td>
+                <td id="m-acc-qml" class="tabular-nums">0.683 &plusmn; 0.007</td>
+              </tr>
+              <tr>
+                <td><strong>ROC-AUC</strong><br><small style="color: var(--text-secondary);">Area under ROC (Tie breaker)</small></td>
+                <td id="m-auc-ml" class="tabular-nums">0.759</td>
+                <td id="m-auc-dl" class="tabular-nums">0.768 &plusmn; 0.002</td>
+                <td id="m-auc-qml" class="tabular-nums">0.732 &plusmn; 0.014</td>
+              </tr>
+              <tr>
+                <td><strong>Decision Threshold</strong><br><small style="color: var(--text-secondary);">Selected on Validation Split</small></td>
+                <td id="m-thr-ml" class="tabular-nums">0.5897</td>
+                <td id="m-thr-dl" class="tabular-nums">0.583 &plusmn; 0.004</td>
+                <td id="m-thr-qml" class="tabular-nums">0.557 &plusmn; 0.030</td>
+              </tr>
+              <tr>
+                <td><strong>Confusion Matrix</strong><br><small style="color: var(--text-secondary);">Actual vs Predicted [TN, FP, FN, TP]</small></td>
+                <td id="m-cm-ml">
+                  <div class="confusion-matrix-box">
+                    <div>Actual \ Pred &nbsp; Normal &nbsp; Elevated</div>
+                    <div style="margin-top: 4px;"><strong>Normal:</strong> &nbsp; TN: 323 &nbsp;|&nbsp; FP: 120</div>
+                    <div><strong>Elevated:</strong> FN: 76 &nbsp;|&nbsp; TP: 159</div>
+                  </div>
+                </td>
+                <td id="m-cm-dl">
+                  <span id="cm-dl-text" style="color: var(--text-secondary); font-size: 12px;">Unavailable in imported summary; computed on fresh local run.</span>
+                </td>
+                <td id="m-cm-qml">
+                  <span id="cm-qml-text" style="color: var(--text-secondary); font-size: 12px;">Unavailable in imported summary; computed on fresh local run.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Compute Backend</strong></td>
+                <td id="m-be-ml">CPU</td>
+                <td id="m-be-dl">CPU (PyTorch)</td>
+                <td id="m-be-qml">default.qubit (CPU Simulator)</td>
+              </tr>
+              <tr>
+                <td><strong>Execution Runtime</strong></td>
+                <td id="m-rt-ml">46.52 s</td>
+                <td id="m-rt-dl">4.65 s</td>
+                <td id="m-rt-qml">32.12 s</td>
+              </tr>
+              <tr>
+                <td><strong>Peak Memory</strong></td>
+                <td id="m-mem-ml">326.6 MB</td>
+                <td id="m-mem-dl">340.2 MB</td>
+                <td id="m-mem-qml">355.8 MB</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 24px;" class="grid-2">
+          <!-- Grayscale Metric Comparison Bar Chart (SVG) -->
+          <div class="svg-chart-container">
+            <div class="chart-title">Metric Comparison by Model Family</div>
+            <svg id="svg-bar-chart" width="100%" height="220" viewBox="0 0 500 220" role="img" aria-label="Metric comparison chart">
+              <!-- Gridlines -->
+              <line x1="50" y1="20" x2="480" y2="20" stroke="var(--border-subtle)" />
+              <line x1="50" y1="60" x2="480" y2="60" stroke="var(--border-subtle)" />
+              <line x1="50" y1="100" x2="480" y2="100" stroke="var(--border-subtle)" />
+              <line x1="50" y1="140" x2="480" y2="140" stroke="var(--border-subtle)" />
+              <line x1="50" y1="180" x2="480" y2="180" stroke="var(--border-strong)" stroke-width="1.5" />
+              
+              <!-- Y-axis labels -->
+              <text x="42" y="24" text-anchor="end" font-size="10" fill="var(--text-secondary)">1.0</text>
+              <text x="42" y="64" text-anchor="end" font-size="10" fill="var(--text-secondary)">0.75</text>
+              <text x="42" y="104" text-anchor="end" font-size="10" fill="var(--text-secondary)">0.50</text>
+              <text x="42" y="144" text-anchor="end" font-size="10" fill="var(--text-secondary)">0.25</text>
+              <text x="42" y="184" text-anchor="end" font-size="10" fill="var(--text-secondary)">0.0</text>
+              
+              <!-- Dynamic bars rendered via JavaScript -->
+              <g id="svg-bars-group"></g>
+            </svg>
+            <div class="chart-legend">
+              <div class="legend-item"><span style="display:inline-block;width:12px;height:12px;background:var(--text-primary);border-radius:2px;"></span> ● ML (Solid)</div>
+              <div class="legend-item"><span style="display:inline-block;width:12px;height:12px;background:var(--text-secondary);border:1px dashed var(--border);border-radius:2px;"></span> ■ DL (Dashed)</div>
+              <div class="legend-item"><span style="display:inline-block;width:12px;height:12px;background:var(--border);border:1px dotted var(--text-primary);border-radius:2px;"></span> ◆ QML (Dotted)</div>
+            </div>
+          </div>
+
+          <!-- Grayscale ROC Curves (SVG) -->
+          <div class="svg-chart-container">
+            <div class="chart-title">ROC Curves (Sensitivity vs 1 - Specificity)</div>
+            <svg id="svg-roc-chart" width="100%" height="220" viewBox="0 0 500 220" role="img" aria-label="ROC curve comparison chart">
+              <!-- Gridlines -->
+              <line x1="50" y1="20" x2="480" y2="20" stroke="var(--border-subtle)" />
+              <line x1="50" y1="100" x2="480" y2="100" stroke="var(--border-subtle)" />
+              <line x1="50" y1="180" x2="480" y2="180" stroke="var(--border-strong)" stroke-width="1.5" />
+              <line x1="50" y1="20" x2="50" y2="180" stroke="var(--border-strong)" stroke-width="1.5" />
+              
+              <!-- Diagonal chance line -->
+              <line x1="50" y1="180" x2="480" y2="20" stroke="var(--border)" stroke-dasharray="4,4" />
+              
+              <!-- Axes labels -->
+              <text x="265" y="210" text-anchor="middle" font-size="11" fill="var(--text-secondary)">False Positive Rate (1 - Specificity)</text>
+              <text x="18" y="100" text-anchor="middle" font-size="11" fill="var(--text-secondary)" transform="rotate(-90 18 100)">True Positive Rate</text>
+              
+              <!-- Curve lines rendered via JavaScript -->
+              <g id="svg-roc-lines"></g>
+            </svg>
+            <div class="chart-legend">
+              <div class="legend-item"><span style="width:16px;height:2px;background:var(--text-primary);display:inline-block;"></span> ● ML (Solid, AUC 0.759)</div>
+              <div class="legend-item"><span style="width:16px;height:2px;border-top:2px dashed var(--text-primary);display:inline-block;"></span> ■ DL (Dashed, AUC 0.768)</div>
+              <div class="legend-item"><span style="width:16px;height:2px;border-top:2px dotted var(--text-primary);display:inline-block;"></span> ◆ QML (Dotted, AUC 0.732)</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 12px; color: var(--text-secondary); background: var(--surface-secondary); padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border); line-height: 1.6;">
+          <strong>Interpretation Note:</strong> All reported metrics are unweighted cross-sectional survey classifications.
+          Multi-seed DL and QML standard deviations reflect variation due to random seed initialization across 5 runs on the single fixed test partition;
+          they must not be conflated with confidence intervals for general population generalizability.
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: MODEL DETAILS -->
+    <section id="view-details" class="view-panel" role="tabpanel" aria-labelledby="nav-details">
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Model Architecture &amp; Hyperparameter Details</h2>
+            <div class="card-subtitle">Technical specifications, backends, parameters, and methodological limitations</div>
+          </div>
+          <div style="display: flex; gap: 8px;" role="tablist" aria-label="Model Details Tabs">
+            <button type="button" class="btn btn-outline btn-sm active" id="tab-det-ml" role="tab" aria-selected="true">Classical ML</button>
+            <button type="button" class="btn btn-outline btn-sm" id="tab-det-dl" role="tab" aria-selected="false">Deep Learning</button>
+            <button type="button" class="btn btn-outline btn-sm" id="tab-det-qml" role="tab" aria-selected="false">Quantum ML</button>
+          </div>
+        </div>
+
+        <div id="details-content-box">
+          <!-- Injected dynamically via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: SINGLE RECORD PREDICT -->
+    <section id="view-predict" class="view-panel" role="tabpanel" aria-labelledby="nav-predict">
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Single-Record Risk Estimate (Optional)</h2>
+            <div class="card-subtitle">Interactive prediction using verified model pipelines</div>
+          </div>
+          <span class="status-pill status-completed">5 Shared Predictors</span>
+        </div>
+
+        <div class="disclaimer-banner" style="margin-bottom: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+          <div><strong>Non-Clinical Warning:</strong> Strictly for academic research demonstration. It does NOT provide medical diagnosis or advice.</div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <form id="form-single-predict" onsubmit="return false;">
+              <div class="form-group">
+                <label class="form-label" for="inp-model-family">Model Family</label>
+                <select id="inp-model-family" class="form-control">
+                  <option value="ml">Classical ML (HistGradientBoosting)</option>
+                  <option value="dl">Deep Learning (PyTorch MLP)</option>
+                  <option value="qml">Quantum ML (PennyLane Simulator)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-age">RIDAGEYR — Age in Years (0–120)</label>
+                <input type="number" id="inp-age" class="form-control" value="45" step="1">
+                <div class="form-error" id="err-age"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-hragz">DMDHRAGZ — Household Reference Person Age Category (1–4)</label>
+                <select id="inp-hragz" class="form-control">
+                  <option value="1">1 (Younger)</option>
+                  <option value="2">2 (Middle-aged)</option>
+                  <option value="3">3 (Older adult)</option>
+                  <option value="4" selected>4 (Senior)</option>
+                </select>
+                <div class="form-error" id="err-hragz"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-hhsze">DMDHHSZE — Household Size (1–7)</label>
+                <input type="number" id="inp-hhsze" class="form-control" value="2" min="1" max="7">
+                <div class="form-error" id="err-hhsze"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-waist">BMXWAIST — Waist Circumference in cm (30–250)</label>
+                <input type="number" id="inp-waist" class="form-control" value="88.5" step="0.1">
+                <div class="form-error" id="err-waist"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inp-bmi">BMXBMI — Body Mass Index in kg/m&sup2; (10–100)</label>
+                <input type="number" id="inp-bmi" class="form-control" value="27.4" step="0.1">
+                <div class="form-error" id="err-bmi"></div>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="btn-submit-predict">Compute Risk Estimate</button>
+            </form>
+          </div>
+
+          <div>
+            <div class="lab-card" style="background: var(--surface-secondary); border-color: var(--border);">
+              <h3 style="margin-top: 0; font-size: 14px; font-weight: 700;">Estimated Classification Result</h3>
+              <div id="predict-result-placeholder" style="color: var(--text-secondary); font-size: 13px; padding: 32px 0; text-align: center;">
+                Enter feature values and click <strong>Compute Risk Estimate</strong> to generate a validated model score.
+              </div>
+
+              <div id="predict-result-card" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px;">
+                  <span class="stat-label">Predicted Class</span>
+                  <span id="res-label" class="status-pill status-completed" style="font-size: 13px; padding: 4px 12px;">Normal</span>
+                </div>
+
+                <div style="margin: 18px 0;">
+                  <div class="stat-label">Model Probability Score</div>
+                  <div class="stat-val" id="res-score" style="font-size: 32px;">0.1245</div>
+                  <div class="stat-sub" id="res-threshold">Validation Decision Threshold: 0.5897</div>
+                </div>
+
+                <!-- Visual Risk Meter -->
+                <div class="risk-meter-container">
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600;">
+                    <span>0.0 (Normal)</span>
+                    <span id="risk-meter-status">Below Threshold</span>
+                    <span>1.0 (Elevated Risk)</span>
+                  </div>
+                  <div class="risk-meter-track">
+                    <div id="risk-meter-fill" class="risk-meter-fill"></div>
+                    <div id="risk-meter-thresh" class="risk-meter-threshold-marker" style="left: 58.9%;"></div>
+                  </div>
+                  <div class="risk-meter-labels">
+                    <span>Lower Probability</span>
+                    <span>Threshold Marker (Val)</span>
+                    <span>Higher Probability</span>
+                  </div>
+                </div>
+
+                <div style="background: var(--surface); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 12px; color: var(--text-secondary);">
+                  <div id="res-model-used">Model: ML (HistGradientBoosting)</div>
+                  <div id="res-run-id">Run ID: reference_baseline</div>
+                  <div style="margin-top: 10px; font-weight: 600; color: var(--text-primary);">
+                    &bull; Research/educational use only. Not a medical diagnosis.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 7: EXPORT -->
+    <section id="view-export" class="view-panel" role="tabpanel" aria-labelledby="nav-export">
+      <div class="lab-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Export Research Reports</h2>
+            <div class="card-subtitle">Aggregate-only experiment reports preserving complete provenance (no participant rows)</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline btn-sm" id="btn-export-json">&darr; Export JSON</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-export-csv">&darr; Export CSV</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-export-html">&darr; Printable HTML</button>
+          </div>
+        </div>
+
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+          In compliance with privacy requirements (SR-1, SR-3, TC-09), all exported deliverables contain strictly aggregate test set metrics,
+          hyperparameters, seed configurations, and software environment versions. No participant-level records or raw prediction arrays are ever exported.
+        </p>
+
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 20px;">
+          <h3 style="font-size: 13px; font-weight: 700; margin: 0;">Report Preview (Aggregate JSON)</h3>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-copy-json" style="padding: 3px 8px; font-size: 11px;">Copy JSON</button>
+        </div>
+        <pre id="export-preview-box" style="margin-top: 8px; background: var(--surface-secondary); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); max-height: 420px; overflow-y: auto; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-primary);"></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ARIA Live Region for Toast Notifications -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

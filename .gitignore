@@ -1,20 +1,32 @@
-# Byte-compiled / optimized / DLL files
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and bytecode
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Environments
+# User uploads and temporary files
+uploads/
+scratch/
+*.log
+
+# Sensitive environment files
 .env
-.venv
-env/
-venv/
-ENV/
+.env.*
 
 # IDE and OS files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Internal developer prompt files
+CodeCraft_Antigravity_Master_Prompt.md

@@ -1,0 +1,280 @@
+{
+  "run_id": "reference_baseline",
+  "source": "executed notebook output",
+  "status": "imported_reference",
+  "created_at": "2026-10-24T00:00:00Z",
+  "dataset_version": "nhanes-2017-2018-v1",
+  "split_hash": "d1419b74e6b90c7e93c051e0f497ba7d577c76b798214e33fa87a1b53ba2cdde",
+  "split_protocol": "fixed shared 70/15/15 split (train.csv, validation.csv, test.csv)",
+  "test_split": {
+    "n": 678,
+    "prevalence": 0.347,
+    "positive_count": 235,
+    "negative_count": 443,
+    "weighting": "unweighted"
+  },
+  "positive_class": "Elevated Risk",
+  "negative_class": "Normal",
+  "ranking_metric": "sensitivity@spec>=0.70",
+  "threshold_rule": "max sensitivity on validation subject to specificity >= 0.70; applied once to test",
+  "feature_set": {
+    "id": "shared_reduced_8dim",
+    "raw_features": [
+      "RIDAGEYR",
+      "DMDHRAGZ",
+      "DMDHHSZE",
+      "BMXWAIST",
+      "BMXBMI"
+    ],
+    "transformed_dimension": 8
+  },
+  "models": {
+    "ml": {
+      "family": "ml",
+      "model_name": "HistGradientBoosting",
+      "status": "imported_reference",
+      "backend": "CPU",
+      "seed": 42,
+      "threshold": 0.5897,
+      "threshold_found": true,
+      "runtime_sec": 46.52,
+      "peak_memory_mb": 326.6,
+      "is_multi_seed": false,
+      "metrics_at_threshold": {
+        "accuracy": 0.711,
+        "precision": 0.57,
+        "sensitivity": 0.677,
+        "specificity": 0.729,
+        "f1": 0.619,
+        "roc_auc": 0.759
+      },
+      "metrics_at_0.5": {
+        "accuracy": 0.686,
+        "precision": 0.531,
+        "sensitivity": 0.791,
+        "specificity": 0.63,
+        "f1": 0.636,
+        "roc_auc": 0.759
+      },
+      "ci95": {
+        "accuracy": [
+          0.678,
+          0.743
+        ],
+        "precision": [
+          0.511,
+          0.629
+        ],
+        "sensitivity": [
+          0.62,
+          0.739
+        ],
+        "specificity": [
+          0.686,
+          0.769
+        ],
+        "f1": [
+          0.57,
+          0.668
+        ],
+        "roc_auc": [
+          0.725,
+          0.796
+        ]
+      },
+      "confusion": [
+        [
+          323,
+          120
+        ],
+        [
+          76,
+          159
+        ]
+      ],
+      "hyperparameters": {
+        "learning_rate": 0.05,
+        "max_iter": 100,
+        "max_leaf_nodes": 8,
+        "class_weight": "balanced"
+      },
+      "library_versions": {
+        "python": "3.13.16",
+        "scikit-learn": "1.6.1",
+        "numpy": "2.1.3"
+      },
+      "limitations": [
+        "Classical tree model evaluated on fixed cross-sectional split.",
+        "Unweighted sample analysis."
+      ]
+    },
+    "dl": {
+      "family": "dl",
+      "model_name": "PyTorch Feed-Forward MLP",
+      "status": "imported_reference",
+      "backend": "CPU",
+      "seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "is_multi_seed": true,
+      "headline_metrics": {
+        "sensitivity": {
+          "mean": 0.661,
+          "sd": 0.01
+        },
+        "specificity": {
+          "mean": 0.719,
+          "sd": 0.005
+        },
+        "precision": {
+          "mean": 0.555,
+          "sd": 0.002
+        },
+        "f1": {
+          "mean": 0.604,
+          "sd": 0.004
+        },
+        "accuracy": {
+          "mean": 0.699,
+          "sd": 0.001
+        },
+        "roc_auc": {
+          "mean": 0.768,
+          "sd": 0.002
+        }
+      },
+      "metrics_at_threshold": {
+        "accuracy": 0.699,
+        "precision": 0.555,
+        "sensitivity": 0.661,
+        "specificity": 0.719,
+        "f1": 0.604,
+        "roc_auc": 0.768
+      },
+      "metrics_at_0.5": {
+        "accuracy": 0.678,
+        "precision": 0.523,
+        "sensitivity": 0.79,
+        "specificity": 0.619,
+        "f1": 0.63,
+        "roc_auc": 0.768
+      },
+      "threshold": {
+        "mean": 0.583,
+        "sd": 0.004
+      },
+      "confusion": null,
+      "confusion_note": "Confusion matrix unavailable for imported aggregate summary; available after fresh local run with predictions.",
+      "runtime_sec": 4.65,
+      "peak_memory_mb": 340.2,
+      "hyperparameters": {
+        "hidden": [
+          64,
+          32
+        ],
+        "dropout": 0.3,
+        "lr": 0.001,
+        "batch_size": 128,
+        "max_epochs": 100,
+        "patience": 10,
+        "weight_decay": 0.0001
+      },
+      "library_versions": {
+        "python": "3.13.16",
+        "torch": "2.11.0+cpu",
+        "numpy": "2.1.3"
+      },
+      "limitations": [
+        "Headline metrics show mean +/- SD over 5 seeds (42-46) reflecting seed variation on fixed split.",
+        "SD is not a confidence interval for generalization."
+      ]
+    },
+    "qml": {
+      "family": "qml",
+      "model_name": "PennyLane Variational Quantum Classifier (VQC)",
+      "status": "imported_reference",
+      "backend": "PennyLane default.qubit simulator (classical simulation on CPU; no quantum hardware)",
+      "seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "is_multi_seed": true,
+      "headline_metrics": {
+        "sensitivity": {
+          "mean": 0.647,
+          "sd": 0.04
+        },
+        "specificity": {
+          "mean": 0.702,
+          "sd": 0.013
+        },
+        "precision": {
+          "mean": 0.535,
+          "sd": 0.008
+        },
+        "f1": {
+          "mean": 0.585,
+          "sd": 0.02
+        },
+        "accuracy": {
+          "mean": 0.683,
+          "sd": 0.007
+        },
+        "roc_auc": {
+          "mean": 0.732,
+          "sd": 0.014
+        }
+      },
+      "metrics_at_threshold": {
+        "accuracy": 0.683,
+        "precision": 0.535,
+        "sensitivity": 0.647,
+        "specificity": 0.702,
+        "f1": 0.585,
+        "roc_auc": 0.732
+      },
+      "metrics_at_0.5": {
+        "accuracy": 0.667,
+        "precision": 0.514,
+        "sensitivity": 0.722,
+        "specificity": 0.637,
+        "f1": 0.6,
+        "roc_auc": 0.732
+      },
+      "threshold": {
+        "mean": 0.557,
+        "sd": 0.03
+      },
+      "confusion": null,
+      "confusion_note": "Confusion matrix unavailable for imported aggregate summary; available after fresh local run with predictions.",
+      "runtime_sec": 32.12,
+      "peak_memory_mb": 355.8,
+      "hyperparameters": {
+        "n_layers": 2,
+        "lr": 0.05,
+        "epochs": 15,
+        "batch_size": 64,
+        "subsample_n": 1500,
+        "n_qubits": 8,
+        "trainable_parameters": 50
+      },
+      "library_versions": {
+        "python": "3.13.16",
+        "pennylane": "0.45.1",
+        "torch": "2.11.0+cpu"
+      },
+      "limitations": [
+        "Simulated on default.qubit CPU; does not run on quantum hardware.",
+        "No quantum advantage claimed.",
+        "Headline metrics reflect mean +/- SD across 5 seeds."
+      ]
+    }
+  }
+}
