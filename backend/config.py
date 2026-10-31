@@ -1,5 +1,6 @@
 """Application configuration and constants."""
 from pathlib import Path
+import os
 import sys
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -37,6 +38,15 @@ MIN_SPECIFICITY_TARGET = 0.70
 
 SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 8000
+
+# MLflow Experiment Tracking Configuration
+MLFLOW_ENABLED = os.environ.get("MLFLOW_ENABLED", "true").lower() in ("true", "1", "yes")
+MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
+MLFLOW_EXPERIMENT_NAME = os.environ.get("MLFLOW_EXPERIMENT_NAME", "CodeCraft-Metabolic-Risk-Benchmark")
+MLFLOW_TRACKING_USERNAME = os.environ.get("MLFLOW_TRACKING_USERNAME", "")
+MLFLOW_TRACKING_PASSWORD = os.environ.get("MLFLOW_TRACKING_PASSWORD", "")
+MLFLOW_ARTIFACTS_DIR = PROJECT_ROOT / "mlartifacts"
+
 
 # Main shared feature set configuration
 MAX_TRANSFORMED_DIM = 8

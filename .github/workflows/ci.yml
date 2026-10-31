@@ -1,0 +1,107 @@
+name: CodeCraft Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: CodeCraft Full Pipeline Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      PYTHONUNBUFFERED: "1"
+      MLFLOW_DISABLE_AGENT_HINT: "1"
+      MLFLOW_ENABLED: "false"
+      SERVER_HOST: "127.0.0.1"
+      SERVER_PORT: "8000"
+
+    steps:
+      # Stage A — Environment & Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+
+      # Stage B — Code Validation & Imports
+      - name: Stage B — Compile code and check syntax
+        run: |
+          echo "Compiling Python source modules..."
+          python -m compileall -q backend tests
+
+      - name: Stage B — Verify backend imports and module resolution
+        run: |
+          python -c "
+          import backend.config as cfg
+          import backend.models.ml_adapter as mla
+          import backend.models.dl_adapter as dla
+          import backend.models.qml_adapter as qmla
+          import backend.orchestration.orchestrator as orch
+          import backend.tracking.mlflow_tracker as mt
+          import backend.api.app as app
+          print('All backend modules imported successfully.')
+          "
+
+      # Stage C — Acceptance Tests (TC-01 through TC-22)
+      - name: Stage C — Run 22 Acceptance Tests (TC-01 to TC-22)
+        run: |
+          python -m pytest -v tests/test_all_requirements.py
+
+      # Stage D — MLflow Integration Tests
+      - name: Stage D — Run MLflow Experiment Tracking Tests
+        run: |
+          python -m pytest -v tests/test_mlflow_tracking.py
+
+      # Stage E — Application Smoke Test
+      - name: Stage E — Application Smoke Test
+        run: |
+          python -c "
+          from starlette.testclient import TestClient
+          from backend.api.app import app
+
+          client = TestClient(app)
+
+          # 1. Dataset endpoint
+          res_ds = client.get('/api/dataset')
+          assert res_ds.status_code == 200, f'Dataset endpoint failed: {res_ds.status_code}'
+          assert res_ds.json()['rows'] == 4515
+
+          # 2. Tracking status endpoint
+          res_tr = client.get('/api/tracking/status')
+          assert res_tr.status_code == 200, f'Tracking status failed: {res_tr.status_code}'
+          assert 'enabled' in res_tr.json()
+
+          # 3. Reference comparison endpoint
+          res_cmp = client.get('/api/comparison?runId=reference_baseline')
+          assert res_cmp.status_code == 200, f'Comparison endpoint failed: {res_cmp.status_code}'
+          assert len(res_cmp.json()['models']) >= 3
+
+          # 4. Root UI endpoint
+          res_ui = client.get('/')
+          assert res_ui.status_code == 200, f'UI root endpoint failed: {res_ui.status_code}'
+          assert 'CodeCraft' in res_ui.text
+
+          print('Stage E Smoke Test completed successfully.')
+          "

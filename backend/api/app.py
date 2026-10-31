@@ -33,6 +33,8 @@ from backend.data.validator import (
 from backend.orchestration.orchestrator import Orchestrator
 from backend.reports.generator import ReportGenerator
 from backend.storage.store import ResultsStore
+from backend.tracking.mlflow_tracker import get_tracker
+
 
 app = FastAPI(
     title="CodeCraft Early Metabolic Risk Detection",
@@ -281,7 +283,9 @@ def get_comparison(runId: Optional[str] = Query("reference_baseline")):
         "thresholdRule": record.get("threshold_rule"),
         "warning": WARNING_TEXT,
         "models": models_list,
+        "mlflow": record.get("mlflow"),
     }
+
 
 
 @app.get("/api/models/{family}")
@@ -363,7 +367,15 @@ def list_available_runs():
     return store.list_runs()
 
 
+@app.get("/api/tracking/status")
+def get_tracking_status():
+    """Returns MLflow tracking availability, active experiment, and UI URL safely."""
+    tracker = get_tracker()
+    return tracker.check_status()
+
+
 # ---------- Front-End Single-Page Application ----------
+
 
 @app.get("/", response_class=HTMLResponse)
 def index_page():

@@ -1,7 +1,13 @@
 # CodeCraft — Early Metabolic Risk Detection Website
 ### Benchmark Comparison of Classical ML vs Deep Learning vs Quantum ML on NHANES 2017–2018
 
+[![CodeCraft Continuous Integration](https://github.com/PES1UG24AM004/SE-Mini-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/PES1UG24AM004/SE-Mini-Project/actions/workflows/ci.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![MLflow 3.x](https://img.shields.io/badge/MLflow-3.x-0194E2.svg)](https://mlflow.org/)
+[![License: Academic Research](https://img.shields.io/badge/License-Academic_Research-lightgrey.svg)](README.md)
+
 > **Academic Research & Educational Use Disclaimer:**  
+
 > **Research/educational use only. Not a diagnosis or medical advice.**  
 > This platform implements a cross-sectional classification benchmark within the NHANES 2017–2018 survey cycle. It does not predict future disease incidence or clinical onset.
 
@@ -30,25 +36,28 @@ All three model families are trained and evaluated under strict experimental dis
 The application adopts a clean, layered architecture with modular separation of concerns:
 
 ```
+├── .github/workflows/   # GitHub Actions automated continuous integration
+│   └── ci.yml           # Automated CI workflow (compile, SRS tests, MLflow, smoke)
 ├── CODECRAFT_COMPLETE_PROJECT_AUDIT.md # Technical audit report & architecture verification
 ├── CodeCraft_Early_Metabolic_Risk_Specification (1).pdf # 31-page SRS & test specification
 ├── README.md            # Setup guide, architecture, benchmark results, walkthrough
-├── requirements.txt     # Pinned Python package dependencies
+├── requirements.txt     # Pinned Python package dependencies (including MLflow 3.x)
 ├── run_server.py        # Single-command startup entry point (127.0.0.1:8000)
-├── .env.example         # Template for environment configuration
+├── .env.example         # Template for environment configuration & MLflow settings
 ├── artifacts/           # Browser test verification, responsive previews & UI checks
 │   ├── browser-tests/   # Automated Chrome test verification screenshots
 │   ├── responsive-previews/ # Multi-viewport layout previews (mobile, tablet, desktop)
 │   └── ui-checks/       # Light/Dark theme and navigation check captures
 ├── backend/             # FastAPI backend with layered architecture
-│   ├── api/             # REST endpoints, CORS, static file mounts
-│   ├── config.py        # Project constants, paths, seed definitions
+│   ├── api/             # REST endpoints, CORS, static file mounts, /api/tracking/status
+│   ├── config.py        # Project constants, paths, MLflow configuration
 │   ├── data/            # Preprocessor, validators, schema checks
 │   ├── evaluation/      # Metric calculations, threshold selection, bootstrap CI
 │   ├── models/          # Adapters: Classical ML, PyTorch DL, PennyLane QML, Stub
-│   ├── orchestration/   # Asynchronous execution, progress tracking & fault isolation
+│   ├── orchestration/   # Asynchronous execution, progress tracking, MLflow run linking
 │   ├── reports/         # Aggregate JSON, CSV (formula sanitized), HTML report generator
-│   └── storage/         # Atomic results store & baseline reference repository
+│   ├── storage/         # Atomic results store & baseline reference repository
+│   └── tracking/        # MLflow automated experiment tracking & hierarchy management
 ├── data/                # CDC NHANES 2017-2018 datasets & reports
 │   ├── processed/       # Merged adult cohorts & model-ready CSVs
 │   ├── reports/         # Dataset audit reports, dictionaries, splitting logs
@@ -56,6 +65,7 @@ The application adopts a clean, layered architecture with modular separation of 
 ├── docs/                # Project documentation, traceability matrix & test reports
 │   ├── browser-debug-report.md # Chrome DevTools debug report and root causes
 │   ├── frontend-repair-notes.md # Responsive & theme implementation notes
+│   ├── mlops-guide.md   # Comprehensive MLOps, CI/CD, and MLflow guide
 │   ├── requirements-traceability.md # RTM mapping SRS to code & tests
 │   └── test-plan.md     # Full Software Test Plan & executed results (TC-01 to TC-22)
 ├── frontend/            # Vanilla JS SPA with responsive scientific interface
@@ -76,12 +86,15 @@ The application adopts a clean, layered architecture with modular separation of 
 │   ├── reference_results.json # Verified notebook baseline reference metrics
 │   ├── shared_feature_set.json # Canonical 5-feature metadata & MI rankings
 │   └── runs/            # Historical benchmark execution records
-├── scripts/             # End-to-end browser regression & viewport verification scripts
+├── scripts/             # Startup, regression & viewport verification scripts
 │   ├── check_viewports.py # Multi-viewport responsiveness verification
+│   ├── start_mlflow.ps1 # Localhost SQLite MLflow tracking server launcher
 │   └── test_chrome_regression_checklist.py # 25-point Chrome regression test script
-└── tests/               # Automated test suite (TC-01 through TC-22 acceptance tests)
-    └── test_all_requirements.py
+└── tests/               # Automated test suite
+    ├── test_all_requirements.py # TC-01 through TC-22 acceptance tests
+    └── test_mlflow_tracking.py  # MLflow integration & experiment tracking tests
 ```
+
 
 ---
 
@@ -202,7 +215,68 @@ This verifies 0 console errors, tab switching, direct bookmark loading, browser 
 
 ---
 
-## 7. Known Methodological Limitations
+## 7. MLOps Infrastructure: GitHub Actions CI & MLflow Tracking
+
+### Continuous Integration with GitHub Actions
+The repository includes an enterprise-grade CI workflow located at [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+- **Triggers:** Automatically runs on every `push` to `main`, every `pull_request` targeting `main`, and manual `workflow_dispatch`.
+- **Security:** Operates under read-only token permissions (`permissions: { contents: read }`), zero secret exposure, and isolated sandboxed execution.
+- **Workflow Pipeline:**
+  1. **Stage A (Environment):** Ubuntu runner, Python 3.11, pip dependency caching, and fast PyTorch CPU wheels.
+  2. **Stage B (Code Validation):** Python bytecode compilation (`compileall`) and backend import resolution.
+  3. **Stage C (Acceptance Tests):** Executes the full 22-test acceptance suite (`TC-01` through `TC-22`).
+  4. **Stage D (MLflow Integration Tests):** Runs 15 automated tracking tests against isolated temporary SQLite storage.
+  5. **Stage E (Application Smoke Test):** Validates API initialization, dataset info, and tracking status endpoints.
+
+### MLflow Automated Experiment Tracking
+CodeCraft integrates **MLflow 3.x** for automated experiment tracking, parameter auditing, metric logging, and model artifact management.
+- **Canonical Experiment:** `CodeCraft-Metabolic-Risk-Benchmark`.
+- **Hierarchical Runs:**
+  - **Parent Run:** Corresponds to the complete user-initiated benchmark execution (logs dataset version, split hash, features, seeds, sample sizes).
+  - **Child Runs:** Nested runs for Classical ML (`ml`), Deep Learning (`dl`), and Quantum ML (`qml`).
+- **Dynamic Capture:** Extracts hyperparameters dynamically from `describe()`, captures decision thresholds, bootstrap CIs, confusion matrices, ROC coordinates, and PennyLane circuit diagrams.
+- **Model Reloadability:** Models and preprocessors are serialized and verified to reload properly (`joblib` for ML, PyTorch state dictionaries for DL/QML).
+- **Fault-Tolerant Observability:** If the tracking server is down or unreachable, pre-flight checks detect it immediately without blocking model training or ResultsStore persistence.
+- **Privacy Enforcement:** Zero raw NHANES rows, participant identifiers (`SEQN`), or individual predictions are ever logged.
+
+### How to Launch Both Services (Local Setup)
+
+1. **Terminal 1: Start Local MLflow Tracking Server**
+   ```powershell
+   # Launches SQLite-backed MLflow server on localhost:5000
+   .\scripts\start_mlflow.ps1
+   ```
+   Open the MLflow UI in your browser at:
+   ```
+   http://127.0.0.1:5000
+   ```
+
+2. **Terminal 2: Start CodeCraft Application Server**
+   ```powershell
+   python run_server.py
+   ```
+   Open the CodeCraft application UI at:
+   ```
+   http://127.0.0.1:8000
+   ```
+
+3. **Check Tracking Status via API:**
+   ```powershell
+   Invoke-RestMethod http://127.0.0.1:8000/api/tracking/status
+   ```
+
+### Reproducing an Experiment & Viewing History
+1. In the CodeCraft UI (`http://127.0.0.1:8000/#run`), launch an ML training run with seed `42`.
+2. As models execute, the background thread logs all hyperparameters, evaluation metrics, and artifacts to MLflow.
+3. Open `http://127.0.0.1:5000` to inspect:
+   - The parent run `CodeCraft-run_YYYYMMDD_...` with split hash and protocol parameters.
+   - The child runs (`ML-run_...`, `DL-run_...`, `QML-run_...`) with sensitivity @ specificity &ge; 0.70, ROC curves, and serialized artifacts.
+4. For full configuration details and remote server setup, refer to [`docs/mlops-guide.md`](docs/mlops-guide.md).
+
+---
+
+## 8. Known Methodological Limitations
+
 
 1. **Cross-Sectional Data:** NHANES surveys participants at a single snapshot in time. Elevated risk indicates concurrent biomarker patterns, not an epidemiological forecast of future diabetes incidence.
 2. **Unweighted Analysis:** The models are evaluated on unweighted sample data; they do not incorporate NHANES complex survey strata or sampling weights.
@@ -210,7 +284,7 @@ This verifies 0 console errors, tab switching, direct bookmark loading, browser 
 
 ---
 
-## 8. Team & Attribution
+## 9. Team & Attribution
 
 **Team Name:** CodeCraft  
 **Course:** Software Engineering Mini-Project  

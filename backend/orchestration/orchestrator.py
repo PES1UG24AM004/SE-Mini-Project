@@ -30,6 +30,8 @@ from backend.models.dl_adapter import DLAdapter
 from backend.models.ml_adapter import MLAdapter
 from backend.models.qml_adapter import QMLAdapter
 from backend.storage.store import ResultsStore
+from backend.tracking.mlflow_tracker import MLflowTracker, get_tracker
+
 
 
 def get_current_process_memory_mb() -> float:
@@ -44,10 +46,16 @@ def get_current_process_memory_mb() -> float:
 class Orchestrator:
     """Thread-safe orchestrator managing asynchronous model runs and status."""
 
-    def __init__(self, store: Optional[ResultsStore] = None):
+    def __init__(
+        self,
+        store: Optional[ResultsStore] = None,
+        tracker: Optional[MLflowTracker] = None,
+    ):
         self.store = store or ResultsStore()
+        self.tracker = tracker or get_tracker()
         self.split_manager = DataSplitManager()
         self.lock = threading.Lock()
+
         self.active_run_id: Optional[str] = None
         self.run_status_cache: Dict[str, Dict[str, Any]] = {}
         # Retain fitted adapters for single record prediction
@@ -217,11 +225,49 @@ class Orchestrator:
                 "models": {},
             }
 
+            # Initialize MLflow parent run inside background worker thread
+            parent_run_id = None
+            mlflow_child_runs: Dict[str, str] = {}
+            try:
+                parent_run_id = self.tracker.start_parent_run(
+                    app_run_id=run_id,
+                    dataset_version=DATASET_VERSION,
+                    split_hash=split_hash,
+                    split_protocol=split_protocol,
+                    seed=seed,
+                    single_seed_mode=single_seed_mode,
+                    models_to_run=models_to_run,
+                    selected_features=selected_features,
+                    transformed_dim=shared_info["transformed_dim"],
+                    n_train=len(train_df),
+                    n_val=len(val_df),
+                    n_test=len(test_df),
+                    ranking_metric=RANKING_METRIC,
+                )
+            except Exception:
+                pass
+
             # 3. Execute each model family with complete fault isolation
             for fam in models_to_run:
                 self._update_model_status(run_id, fam, "running", progress=10)
                 t0 = time.time()
                 mem_start = get_current_process_memory_mb()
+
+                # Start MLflow child run
+                child_run_id = None
+                try:
+                    child_run_id = self.tracker.start_child_run(
+                        parent_run_id=parent_run_id,
+                        app_run_id=run_id,
+                        family=fam,
+                        model_name=fam.upper(),
+                        backend="CPU",
+                        seed=seed,
+                    )
+                    if child_run_id:
+                        mlflow_child_runs[fam] = child_run_id
+                except Exception:
+                    pass
 
                 try:
                     # Injected failure simulation test (TC-14)
@@ -276,6 +322,28 @@ class Orchestrator:
                         self.fitted_adapters[f"{run_id}_ml"] = adapter
                         self.active_thresholds[f"{run_id}_ml"] = eval_res["threshold"]
 
+                        # MLflow tracking
+                        try:
+                            if child_run_id:
+                                self.tracker.log_model_parameters(child_run_id, fam, desc)
+                                self.tracker.log_model_metrics(
+                                    child_run_id=child_run_id,
+                                    eval_res=eval_res,
+                                    runtime_sec=runtime_sec,
+                                    peak_memory_mb=peak_mem,
+                                    test_n=int(len(y_test)),
+                                    test_prevalence=round(float(np.mean(y_test)), 4),
+                                )
+                                self.tracker.log_model_artifacts(
+                                    child_run_id=child_run_id,
+                                    family=fam,
+                                    model_record=run_record["models"]["ml"],
+                                    adapter=adapter,
+                                )
+                                self.tracker.end_child_run(child_run_id, status="FINISHED")
+                        except Exception:
+                            pass
+
                     elif fam == "dl":
                         self._update_model_status(run_id, fam, "running", progress=25)
                         seeds_to_run = [seed] if single_seed_mode else DEFAULT_SEEDS
@@ -302,6 +370,13 @@ class Orchestrator:
                             seed_evals.append(ev)
                             last_adapter = dl_ad
                             last_eval = ev
+
+                            # Log individual seed metrics to MLflow if multi-seed
+                            try:
+                                if child_run_id and len(seeds_to_run) > 1:
+                                    self.tracker.log_seed_metrics(child_run_id, s, ev)
+                            except Exception:
+                                pass
 
                         runtime_sec = round(time.time() - t0, 2)
                         peak_mem = max(mem_start, get_current_process_memory_mb())
@@ -338,6 +413,29 @@ class Orchestrator:
                         self.fitted_adapters[f"{run_id}_dl"] = last_adapter
                         self.active_thresholds[f"{run_id}_dl"] = float(thr_summary["mean"])
 
+                        # MLflow tracking
+                        try:
+                            if child_run_id:
+                                self.tracker.log_model_parameters(child_run_id, fam, desc)
+                                self.tracker.log_model_metrics(
+                                    child_run_id=child_run_id,
+                                    eval_res=last_eval,
+                                    runtime_sec=runtime_sec,
+                                    peak_memory_mb=peak_mem,
+                                    test_n=int(len(y_test)),
+                                    test_prevalence=round(float(np.mean(y_test)), 4),
+                                    headline_metrics=headline_metrics,
+                                )
+                                self.tracker.log_model_artifacts(
+                                    child_run_id=child_run_id,
+                                    family=fam,
+                                    model_record=run_record["models"]["dl"],
+                                    adapter=last_adapter,
+                                )
+                                self.tracker.end_child_run(child_run_id, status="FINISHED")
+                        except Exception:
+                            pass
+
                     elif fam == "qml":
                         self._update_model_status(run_id, fam, "running", progress=25)
                         seeds_to_run = [seed] if single_seed_mode else DEFAULT_SEEDS
@@ -365,6 +463,13 @@ class Orchestrator:
                             seed_evals.append(ev)
                             last_adapter = qml_ad
                             last_eval = ev
+
+                            # Log individual seed metrics to MLflow if multi-seed
+                            try:
+                                if child_run_id and len(seeds_to_run) > 1:
+                                    self.tracker.log_seed_metrics(child_run_id, s, ev)
+                            except Exception:
+                                pass
 
                         runtime_sec = round(time.time() - t0, 2)
                         peak_mem = max(mem_start, get_current_process_memory_mb())
@@ -402,6 +507,29 @@ class Orchestrator:
                         self.fitted_adapters[f"{run_id}_qml"] = last_adapter
                         self.active_thresholds[f"{run_id}_qml"] = float(thr_summary["mean"])
 
+                        # MLflow tracking
+                        try:
+                            if child_run_id:
+                                self.tracker.log_model_parameters(child_run_id, fam, desc)
+                                self.tracker.log_model_metrics(
+                                    child_run_id=child_run_id,
+                                    eval_res=last_eval,
+                                    runtime_sec=runtime_sec,
+                                    peak_memory_mb=peak_mem,
+                                    test_n=int(len(y_test)),
+                                    test_prevalence=round(float(np.mean(y_test)), 4),
+                                    headline_metrics=headline_metrics,
+                                )
+                                self.tracker.log_model_artifacts(
+                                    child_run_id=child_run_id,
+                                    family=fam,
+                                    model_record=run_record["models"]["qml"],
+                                    adapter=last_adapter,
+                                )
+                                self.tracker.end_child_run(child_run_id, status="FINISHED")
+                        except Exception:
+                            pass
+
                     self._update_model_status(
                         run_id,
                         fam,
@@ -430,9 +558,49 @@ class Orchestrator:
                         runtime_sec=runtime_sec,
                         error=err_msg,
                     )
+                    # Record failure in MLflow child run
+                    try:
+                        if child_run_id:
+                            self.tracker.record_child_failure(child_run_id, err_msg)
+                    except Exception:
+                        pass
+
+            # Record MLflow run IDs in run record for traceability
+            if parent_run_id or mlflow_child_runs:
+                run_record["mlflow"] = {
+                    "tracking_enabled": self.tracker.enabled,
+                    "parent_run_id": parent_run_id,
+                    "child_run_ids": mlflow_child_runs,
+                    "experiment_name": self.tracker.experiment_name,
+                }
+
+            # Determine overall parent status
+            has_completed = any(m.get("status") == "completed" for m in run_record["models"].values())
+            has_failed = any(m.get("status") == "failed" for m in run_record["models"].values())
+
+            parent_status = "FINISHED"
+            completion_tag = "full_success"
+            if has_failed and has_completed:
+                parent_status = "FINISHED"
+                completion_tag = "partial_completion"
+            elif has_failed and not has_completed:
+                parent_status = "FAILED"
+                completion_tag = "all_failed"
+
+            try:
+                if parent_run_id:
+                    self.tracker.end_parent_run(
+                        parent_run_id=parent_run_id,
+                        status=parent_status,
+                        tags={"completion_status": completion_tag},
+                        run_record=run_record,
+                    )
+            except Exception:
+                pass
 
             # 4. Save run record atomically
             self.store.save_run(run_record)
+
 
             with self.lock:
                 if run_id in self.run_status_cache:

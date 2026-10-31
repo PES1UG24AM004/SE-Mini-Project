@@ -36,3 +36,11 @@ Thumbs.db
 
 # Internal developer prompt files
 CodeCraft_Antigravity_Master_Prompt.md
+
+# MLflow experiment tracking databases and local artifacts
+mlflow.db
+mlflow.db-shm
+mlflow.db-wal
+mlartifacts/
+mlruns/
+
