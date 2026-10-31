@@ -126,9 +126,50 @@ In accordance with ethical clinical machine learning principles and NHANES usage
 
 ---
 
-## 6. Verification of Published GitHub Repository
+## 6. Verification of Published GitHub Repository & Actions Run
 
 - **Git Remote:** `https://github.com/PES1UG24AM004/SE-Mini-Project.git`
 - **Branch:** `main`
+- **Commit SHA:** `7391294`
 - **Commit Author:** `Aarav Yuval B G <aaravyuval@gmail.com>`
-- **Workflow Path:** `.github/workflows/ci.yml`
+- **Workflow File:** `.github/workflows/ci.yml`
+- **GitHub Actions Run ID:** `41173864046`
+- **GitHub Actions Job ID:** `124457257331`
+- **Workflow Run URL:** `https://github.com/PES1UG24AM004/SE-Mini-Project/actions/runs/41173864046`
+- **Workflow Status:** **SUCCESS (All 5 Stages Passed in 1m 33s)**
+
+### GitHub Actions Execution Stage Breakdown
+- `Stage A — Environment Setup`: Passed (Python 3.11, Ubuntu Latest, Pip Caching, CPU PyTorch)
+- `Stage B — Code Validation`: Passed (compileall backend & tests, module resolution)
+- `Stage C — Acceptance Tests`: Passed (All 22 SRS test cases TC-01 to TC-22 passed)
+- `Stage D — MLflow Integration Tests`: Passed (All 15 MLflow lifecycle & isolation tests passed)
+- `Stage E — Application Smoke Test`: Passed (FastAPI endpoints `/api/dataset`, `/api/tracking/status`, `/api/comparison`, `/` passed)
+
+---
+
+## 7. Operational Instructions Summary
+
+### Start Local Tracking Server (PowerShell)
+```powershell
+.\scripts\start_mlflow.ps1
+```
+Tracking UI: `http://127.0.0.1:5000`
+
+### Start Application Server
+```powershell
+python run_server.py
+```
+App UI: `http://127.0.0.1:8000`
+
+### Verify Tracking Endpoint
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/api/tracking/status
+```
+
+---
+
+## 8. Limitations & Ongoing Governance
+
+1. **Local vs Cloud Tracking Storage:** The default local development configuration utilizes a SQLite backend (`sqlite:///mlflow.db`) and local directory artifacts (`./mlartifacts`). When deploying across distributed multi-node teams, configuring `MLFLOW_TRACKING_URI` to a centralized tracking server and artifact store (S3/GCS) is recommended.
+2. **Quantum Simulator Budget:** PennyLane VQC simulations run locally on CPU state-vector simulation (`default.qubit`). For fast development and CI throughput, single-seed execution is utilized in automated CI runs.
+
