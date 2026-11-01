@@ -154,6 +154,6 @@ Evaluated on held-out NHANES 2017–2018 test records ($n = 678$, unweighted pre
 **Institution:** PES University (RR Campus)  
 
 **Team Members:**
-- **Aarav Yuval B G** — SRN: `PES1UG24AM004` (Lead Repository Engineer)
+- **Aarav Yuval B G** — SRN: `PES1UG24AM004` 
 - **Abhay TS** — SRN: `PES1UG24AM008`
 - **Abhishek PH** — SRN: `PES1UG24AM013`
