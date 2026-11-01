@@ -26,19 +26,19 @@ All components were integrated into the platform's actual runtime execution path
 
 | File Path | Nature of Change | Description |
 | :--- | :--- | :--- |
-| [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | **New** | GitHub Actions CI workflow (Stages A through E, read-only permissions, 15m timeout). |
-| [`backend/tracking/__init__.py`](backend/tracking/__init__.py) | **New** | Package initializer exposing `MLflowTracker` and singleton `get_tracker()`. |
-| [`backend/tracking/mlflow_tracker.py`](backend/tracking/mlflow_tracker.py) | **New** | Resilient experiment tracker supporting hierarchical runs, pre-flight connectivity checks, and artifacts. |
-| [`backend/orchestration/orchestrator.py`](backend/orchestration/orchestrator.py) | **Modified** | Integrated parent/child run lifecycle, multi-seed loops, fault isolation, and ResultsStore linking. |
-| [`backend/api/app.py`](backend/api/app.py) | **Modified** | Added `GET /api/tracking/status` endpoint; exposed `mlflow` run metadata in `/api/comparison`. |
-| [`backend/config.py`](backend/config.py) | **Modified** | Added MLflow configuration constants (`MLFLOW_ENABLED`, `MLFLOW_TRACKING_URI`, etc.). |
-| [`requirements.txt`](requirements.txt) | **Modified** | Added `mlflow>=3.1,<4` dependency. |
-| [`.env.example`](.env.example) | **Modified** | Documented MLflow environment variables with secure defaults. |
-| [`.gitignore`](.gitignore) | **Modified** | Excluded `mlflow.db*`, `mlartifacts/`, and `mlruns/` to prevent tracking artifacts in git. |
-| [`scripts/start_mlflow.ps1`](scripts/start_mlflow.ps1) | **New** | Localhost SQLite MLflow server launcher for Windows PowerShell. |
-| [`tests/test_mlflow_tracking.py`](tests/test_mlflow_tracking.py) | **New** | 15 comprehensive integration tests for MLflow lifecycle, artifacts, privacy, and endpoints. |
-| [`docs/mlops-guide.md`](docs/mlops-guide.md) | **New** | Comprehensive operational guide for CI/CD, MLflow hierarchy, privacy, and troubleshooting. |
-| [`README.md`](README.md) | **Modified** | Added CI badge, MLOps infrastructure overview, dual-service setup, and reproduction instructions. |
+| [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) | **New** | GitHub Actions CI workflow (Stages A through E, read-only permissions, 15m timeout). |
+| [`backend/tracking/__init__.py`](../../backend/tracking/__init__.py) | **New** | Package initializer exposing `MLflowTracker` and singleton `get_tracker()`. |
+| [`backend/tracking/mlflow_tracker.py`](../../backend/tracking/mlflow_tracker.py) | **New** | Resilient experiment tracker supporting hierarchical runs, pre-flight connectivity checks, and artifacts. |
+| [`backend/orchestration/orchestrator.py`](../../backend/orchestration/orchestrator.py) | **Modified** | Integrated parent/child run lifecycle, multi-seed loops, fault isolation, and ResultsStore linking. |
+| [`backend/api/app.py`](../../backend/api/app.py) | **Modified** | Added `GET /api/tracking/status` endpoint; exposed `mlflow` run metadata in `/api/comparison`. |
+| [`backend/config.py`](../../backend/config.py) | **Modified** | Added MLflow configuration constants (`MLFLOW_ENABLED`, `MLFLOW_TRACKING_URI`, etc.). |
+| [`requirements.txt`](../../requirements.txt) | **Modified** | Added `mlflow>=3.1,<4` dependency. |
+| [`.env.example`](../../.env.example) | **Modified** | Documented MLflow environment variables with secure defaults. |
+| [`.gitignore`](../../.gitignore) | **Modified** | Excluded `mlflow.db*`, `mlartifacts/`, and `mlruns/` to prevent tracking artifacts in git. |
+| [`scripts/start_mlflow.ps1`](../../scripts/start_mlflow.ps1) | **New** | Localhost SQLite MLflow server launcher for Windows PowerShell. |
+| [`tests/test_mlflow_tracking.py`](../../tests/test_mlflow_tracking.py) | **New** | 15 comprehensive integration tests for MLflow lifecycle, artifacts, privacy, and endpoints. |
+| [`docs/mlops-guide.md`](../05-devops/mlops-guide.md) | **New** | Comprehensive operational guide for CI/CD, MLflow hierarchy, privacy, and troubleshooting. |
+| [`README.md`](../../README.md) | **Modified** | Added CI badge, MLOps infrastructure overview, dual-service setup, and reproduction instructions. |
 
 ---
 

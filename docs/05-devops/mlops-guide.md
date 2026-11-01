@@ -25,7 +25,7 @@ While the platform previously recorded execution runs in a local JSON `ResultsSt
 
 ## 2. GitHub Actions CI Architecture
 
-The continuous integration workflow is defined in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
+The continuous integration workflow is defined in [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml).
 
 ### Workflow Triggers
 The workflow triggers automatically upon:
@@ -100,7 +100,7 @@ If a GitHub Actions CI workflow run fails:
 
 ## 4. MLflow Experiment Tracking Architecture
 
-The tracking architecture is implemented in [`backend/tracking/mlflow_tracker.py`](../backend/tracking/mlflow_tracker.py) and seamlessly integrated into the asynchronous orchestrator in [`backend/orchestration/orchestrator.py`](../backend/orchestration/orchestrator.py).
+The tracking architecture is implemented in [`backend/tracking/mlflow_tracker.py`](../../backend/tracking/mlflow_tracker.py) and seamlessly integrated into the asynchronous orchestrator in [`backend/orchestration/orchestrator.py`](../../backend/orchestration/orchestrator.py).
 
 ### Canonical Experiment Hierarchy
 

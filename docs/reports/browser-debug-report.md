@@ -48,12 +48,12 @@ Because `app.js` contained a fatal `SyntaxError`, the Chrome V8 JavaScript engin
 
 | File Path | Description of Changes |
 | :--- | :--- |
-| [`frontend/static/js/app.js`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/frontend/static/js/app.js) | Fixed template interpolation syntax (`${formatNum(m.ci95[item.key][1])}]`); added hash-based client routing (`#overview`, `#dataset`, `#run`, `#comparison`, `#details`, `#predict`, `#export`) with `hashchange` and `popstate` listeners; implemented theme toggle logic with `localStorage` persistence; added empty/pending fallback states for unrun models; exposed test automation hooks `window.CodeCraft`. |
-| [`frontend/templates/index.html`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/frontend/templates/index.html) | Converted static `<li>` pills to accessible, semantic `<a>` links with `role="tab"`, `aria-selected`, and `aria-controls`; added `#btn-theme-toggle` in header; added early inline theme initializer script in `<head>` to prevent theme flashing; added live region `#toast-container`; clarified partition breakdown in `#view-dataset` (3,160 train / 677 val / 678 test). |
-| [`frontend/static/css/style.css`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/frontend/static/css/style.css) | Converted interface to a strict grayscale design system (Light: `#F5F5F5` canvas, `#FFFFFF` surface, `#191919` text, `#D5D5D5` borders; Dark: `#111111` canvas, `#191919` surface, `#F4F4F4` text, `#3C3C3C` borders); implemented geometric non-color cues (ML: solid border with ●, DL: dashed border with ■, QML: dotted border with ◆); replaced UTF-8 non-ASCII characters in comments to guarantee CP-1252 decoder compatibility on Windows. |
-| [`backend/orchestration/orchestrator.py`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/backend/orchestration/orchestrator.py) | Upgraded run ID timestamp formatting to microsecond resolution (`%Y%m%d_%H%M%S_%f`) to prevent ID collisions during rapid consecutive automated test runs. |
-| [`docs/frontend-repair-notes.md`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/docs/frontend-repair-notes.md) | Documented complete diagnosis, root causes, implementation details, screenshot manifests, and verification logs. |
-| [`README.md`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/README.md) | Updated user walkthrough to document hash-based SPA navigation, strict grayscale theme switcher, and Selenium verification commands. |
+| [`frontend/static/js/app.js`](../../frontend/static/js/app.js) | Fixed template interpolation syntax (`${formatNum(m.ci95[item.key][1])}]`); added hash-based client routing (`#overview`, `#dataset`, `#run`, `#comparison`, `#details`, `#predict`, `#export`) with `hashchange` and `popstate` listeners; implemented theme toggle logic with `localStorage` persistence; added empty/pending fallback states for unrun models; exposed test automation hooks `window.CodeCraft`. |
+| [`frontend/templates/index.html`](../../frontend/templates/index.html) | Converted static `<li>` pills to accessible, semantic `<a>` links with `role="tab"`, `aria-selected`, and `aria-controls`; added `#btn-theme-toggle` in header; added early inline theme initializer script in `<head>` to prevent theme flashing; added live region `#toast-container`; clarified partition breakdown in `#view-dataset` (3,160 train / 677 val / 678 test). |
+| [`frontend/static/css/style.css`](../../frontend/static/css/style.css) | Converted interface to a strict grayscale design system (Light: `#F5F5F5` canvas, `#FFFFFF` surface, `#191919` text, `#D5D5D5` borders; Dark: `#111111` canvas, `#191919` surface, `#F4F4F4` text, `#3C3C3C` borders); implemented geometric non-color cues (ML: solid border with ●, DL: dashed border with ■, QML: dotted border with ◆); replaced UTF-8 non-ASCII characters in comments to guarantee CP-1252 decoder compatibility on Windows. |
+| [`backend/orchestration/orchestrator.py`](../../backend/orchestration/orchestrator.py) | Upgraded run ID timestamp formatting to microsecond resolution (`%Y%m%d_%H%M%S_%f`) to prevent ID collisions during rapid consecutive automated test runs. |
+| [`docs/frontend-repair-notes.md`](frontend-repair-notes.md) | Documented complete diagnosis, root causes, implementation details, screenshot manifests, and verification logs. |
+| [`README.md`](../../README.md) | Updated user walkthrough to document hash-based SPA navigation, strict grayscale theme switcher, and Selenium verification commands. |
 
 ---
 
@@ -95,7 +95,7 @@ Google Chrome was confirmed installed and used for automated testing via Seleniu
 
 ## 7. Results for All 25 Chrome Checklist Items
 
-All 25 checklist items were executed in Google Chrome via [`scratch/test_chrome_regression_checklist.py`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/scratch/test_chrome_regression_checklist.py).
+All 25 checklist items were executed in Google Chrome via [`scratch/test_chrome_regression_checklist.py`](../../scratch/test_chrome_regression_checklist.py).
 
 | Item # | Section & Title | Status | Evidence / Observed Behavior | Screenshot |
 | :---: | :--- | :---: | :--- | :--- |
@@ -170,7 +170,7 @@ tests/test_all_requirements.py::test_tc22_resource_logging PASSED        [100%]
 
 ## 9. Screenshot Artifacts
 
-All screenshots captured during live Google Chrome execution are saved in [`artifacts/browser-tests/`](file:///C:/Users/Aarav/Documents/Studies/Sem5/Assignments/Software_Engineering/MIni/artifacts/browser-tests/):
+All screenshots captured during live Google Chrome execution are saved in [`artifacts/browser-tests/`](../../artifacts/browser-tests/):
 
 * `01_nav_overview.png`
 * `02_nav_dataset.png`
