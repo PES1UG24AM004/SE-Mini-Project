@@ -1,58 +1,71 @@
-# CodeCraft Documentation Index
+# CodeCraft Academic Documentation Index & 30-Mark Rubric Mapping
 
-Welcome to the central documentation index for the **CodeCraft Early Metabolic Risk Detection Platform** (Software Engineering Mini-Project, PES University).
+Welcome to the central academic documentation directory for the **CodeCraft Early Metabolic Risk Detection Platform** (Software Engineering Mini-Project, PES University).
 
-All project documentation has been consolidated into a structured, discoverable hierarchy adhering to professional software engineering practices and kebab-case naming conventions.
-
----
-
-## 1. Documentation Taxonomy & Quick Reference
-
-| Directory | Deliverable / File | Type | Status | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| [`01-requirements/`](01-requirements/) | [`product-backlog.docx`](01-requirements/product-backlog.docx) | DOCX | **Active (Jira Backlog)** | 13 epics, 63 work items (23 stories, 39 tasks) mapped to SRS requirement IDs; includes proposed Fibonacci story points and team-reported statuses. |
-| [`01-requirements/`](01-requirements/) | [`software-requirements-specification.pdf`](01-requirements/software-requirements-specification.pdf) | PDF | **Authoritative Baseline** | Original 31-page course submission (Part 1: SRS, SAD, and STP) dated 12 October 2026. |
-| [`01-requirements/`](01-requirements/) | [`requirements-traceability-matrix.md`](01-requirements/requirements-traceability-matrix.md) | Markdown | **Verified** | Bidirectional Requirements Traceability Matrix (RTM) linking FR-01 through FR-18, NFRs, and Security Requirements to source modules and acceptance test cases. |
-| [`02-architecture/`](02-architecture/) | [`software-architecture-and-design.docx`](02-architecture/software-architecture-and-design.docx) | DOCX | **Authoritative Specification** | Software Architecture and Design Specification (Part B) specifying the layered local architecture, ModelAdapter strategy pattern, data flow, and security controls. |
-| [`03-sprints/`](03-sprints/) | [`sprint-1-reconstructed.docx`](03-sprints/sprint-1-reconstructed.docx) | DOCX | **Reconstructed** | Sprint 1 planning, candidate scope, review, and retrospective (19–23 October 2026); clearly labeled as reconstructed from technical epics without fabricated Jira commitments. |
-| [`03-sprints/`](03-sprints/) | [`sprint-2-interim.docx`](03-sprints/sprint-2-interim.docx) | DOCX | **Interim** | Sprint 2 planning, scope changes (CODECRAFT-11 addition), burnup charts, and review (26–30 October 2026); maintained as interim pending final team sign-off. |
-| [`04-testing/`](04-testing/) | [`software-test-plan.docx`](04-testing/software-test-plan.docx) | DOCX | **Authoritative Plan** | Formal IEEE-style Software Test Plan (STP-CODECRAFT-EMRD-1.0, Part C) specifying TC-01 through TC-22, pass/fail thresholds, and critical test classifications. |
-| [`04-testing/`](04-testing/) | [`unit-test-report.docx`](04-testing/unit-test-report.docx) | DOCX | **Draft (Awaiting Evidence)** | Unit and component test report covering modules against STP cases (TC-01..10, TC-16, TC-20); explicitly tracks unverified/NOT RUN module tests without false claims. |
-| [`04-testing/`](04-testing/) | [`system-test-report.docx`](04-testing/system-test-report.docx) | DOCX | **Illustrative Draft** | System-level test report (TC-11..15, TC-17..19, TC-21..22); includes prominent warning that Section 5 execution values are simulated examples for format verification. |
-| [`05-devops/`](05-devops/) | [`devops-tool-adoption.docx`](05-devops/devops-tool-adoption.docx) | DOCX | **Authoritative Report** | DevOps tool adoption document distinguishing verified tool practices (Git, GitHub, GitHub Actions, Pytest, MLflow) from planned/reported workflows. |
-| [`05-devops/`](05-devops/) | [`mlops-guide.md`](05-devops/mlops-guide.md) | Markdown | **Active Operational Guide** | Comprehensive guide covering GitHub Actions CI architecture, local/remote MLflow tracking, hierarchical runs, artifact storage, and troubleshooting. |
-| [`reports/`](reports/) | [`documentation-consolidation-report.md`](reports/documentation-consolidation-report.md) | Markdown | **Final Audit Deliverable** | Master audit report detailing source inventory, SHA-256 verifications, duplicate removals, Git hygiene, and end-to-end verification. |
-| [`reports/`](reports/) | [`codecraft-complete-project-audit.md`](reports/codecraft-complete-project-audit.md) | Markdown | **Technical Audit** | Comprehensive independent audit report covering architecture, data leakage verification, model evaluations, UI compliance, and security. |
-| [`reports/`](reports/) | [`github-integration-report.md`](reports/github-integration-report.md) | Markdown | **Milestone Report** | Full-stack application integration and GitHub publishing verification report. |
-| [`reports/`](reports/) | [`repository-completeness-audit.md`](reports/repository-completeness-audit.md) | Markdown | **Milestone Report** | Completeness verification covering source modules, dataset splits, test fixtures, notebooks, and screenshots. |
-| [`reports/`](reports/) | [`mlops-integration-report.md`](reports/mlops-integration-report.md) | Markdown | **Milestone Report** | Verification report for GitHub Actions CI and MLflow experiment tracking integration. |
-| [`reports/`](reports/) | [`browser-debug-report.md`](reports/browser-debug-report.md) | Markdown | **Diagnostic Report** | Chrome DevTools debug report and 25-point browser regression checklist results. |
-| [`reports/`](reports/) | [`frontend-repair-notes.md`](reports/frontend-repair-notes.md) | Markdown | **Engineering Notes** | Architectural notes on single-page navigation, accessibility, and grayscale design system compliance. |
-| [`reports/`](reports/) | [`automated-test-execution-report.md`](reports/automated-test-execution-report.md) | Markdown | **Execution Log** | Automated test execution report of the 22 acceptance tests (`tests/test_all_requirements.py`). |
-| [`archive/`](archive/) | [`README.md`](archive/README.md) | Markdown | **Policy Document** | Archival policy and catalog of historical/superseded artifacts. |
+This directory organizes all coursework deliverables according to the official **30-Mark Academic Assessment Rubric**, providing direct navigation, canonical paths, and verified academic statuses for course evaluation.
 
 ---
 
-## 2. Navigating the Deliverables
+## 1. 30-Mark Assessment Rubric Checklist
 
-### Requirements & Product Scope
-- For the formal requirement definitions, see the [Software Requirements Specification](01-requirements/software-requirements-specification.pdf).
-- For the active 63-item backlog and Jira epics, see the [Product Backlog](01-requirements/product-backlog.docx).
-- To trace any functional requirement (FR-01 to FR-18) to source code and tests, consult the [Requirements Traceability Matrix](01-requirements/requirements-traceability-matrix.md).
+| No. | Academic Deliverable | Marks | Canonical Location | Format | Verification Status | Deliverable Summary |
+| :---: | :--- | :---: | :--- | :---: | :---: | :--- |
+| 1 | **Software Requirements Specification (SRS)** | **5** | [`01-requirements/software-requirements-specification.pdf`](01-requirements/software-requirements-specification.pdf) | PDF | **VERIFIED** | Formal 31-page baseline specification (Part 1, 12 Oct 2026) detailing FR-01..18, NFRs, and Security Requirements. |
+| 2 | **Software Test Plan (STP)** | **2** | [`04-testing/software-test-plan.docx`](04-testing/software-test-plan.docx) | DOCX | **VERIFIED** | IEEE-style Software Test Plan (STP-CODECRAFT-EMRD-1.0, Part C) specifying TC-01 through TC-22 and pass/fail thresholds. |
+| 3 | **Software Architecture and Design (SAD)** | **3** | [`02-architecture/software-architecture-and-design.docx`](02-architecture/software-architecture-and-design.docx) | DOCX | **VERIFIED** | Formal SAD (Part B) specifying the layered architecture, ModelAdapter strategy pattern, data flow, and security controls. |
+| 4 | **Product Backlog** | **4** | [`01-requirements/product-backlog.docx`](01-requirements/product-backlog.docx) | DOCX | **PRESENT WITH GAPS** | AE2 Backlog: 13 epics, 63 work items (23 stories, 39 tasks) mapped to SRS with proposed Fibonacci estimates and reported Done statuses. |
+| 5 | **Sprint 1** | **3** | [`03-sprints/sprint-1-reconstructed.docx`](03-sprints/sprint-1-reconstructed.docx) | DOCX | **PRESENT WITH GAPS (RECONSTRUCTED)** | Reconstructed Sprint 1 planning and candidate scope (19–23 Oct 2026); unattributed scope preserved without fabricated Jira commitments. |
+| 6 | **Sprint 2** | **3** | [`03-sprints/sprint-2-interim.docx`](03-sprints/sprint-2-interim.docx) | DOCX | **PRESENT WITH GAPS (INTERIM)** | Interim Sprint 2 scope, burnup charts, and review (26–30 Oct 2026); tracks CODECRAFT-11 addition and open questions pending sign-off. |
+| 7 | **Unit Test Report** | **4** | [`04-testing/unit-test-report.docx`](04-testing/unit-test-report.docx) | DOCX | **PRESENT WITH GAPS (DRAFT)** | AE4 Unit Test Report covering module tests (TC-01..10, TC-16, TC-20); draft awaiting separate module-level execution logs. |
+| 8 | **System Test Report** | **3** | [`04-testing/system-test-report.docx`](04-testing/system-test-report.docx) | DOCX | **PRESENT WITH GAPS (ILLUSTRATIVE)** | AE4 System Test Report (TC-11..15, TC-17..19, TC-21..22); includes mock execution format templates explicitly identified for replacement. |
+| 9 | **DevOps Tool Adoption** | **3** | [`05-devops/devops-tool-adoption.docx`](05-devops/devops-tool-adoption.docx) | DOCX | **VERIFIED (EVIDENCED)** | AE5 DevOps Report distinguishing verified tool practices (Git, GitHub, GitHub Actions CI, Pytest, MLflow) from reported workflows. |
+| | **TOTAL** | **30** | | | | **Part 1 (Items 1–3) = 10 Marks \| Part 2 (Items 4–9) = 20 Marks** |
 
-### Architecture & System Design
-- For system component interactions, data flows, and security design, review the [Software Architecture and Design Specification](02-architecture/software-architecture-and-design.docx).
+---
 
-### Agile Sprints & Governance
-- Sprint 1 (Reconstructed candidate scope): [Sprint 1 Documentation](03-sprints/sprint-1-reconstructed.docx).
-- Sprint 2 (Interim delivery scope & burnup): [Sprint 2 Documentation](03-sprints/sprint-2-interim.docx).
+## 2. Directory Hierarchy
 
-### Testing & Verification
-- Test case specifications (TC-01 through TC-22): [Software Test Plan](04-testing/software-test-plan.docx).
-- Module-level test classification and coverage: [Unit Test Report](04-testing/unit-test-report.docx).
-- End-to-end integration and environment testing: [System Test Report](04-testing/system-test-report.docx).
-- Real-time automated test results: [Automated Test Execution Report](reports/automated-test-execution-report.md).
+```text
+docs/
+├── README.md                                      # Central 30-mark rubric index and deliverable roadmap
+├── 01-requirements/                               # Requirements & Backlog (Items 1 & 4)
+│   ├── software-requirements-specification.pdf    # Graded Deliverable 1: SRS (5 Marks)
+│   └── product-backlog.docx                       # Graded Deliverable 4: Product Backlog (4 Marks)
+├── 02-architecture/                               # Architecture & Detailed Design (Item 3)
+│   └── software-architecture-and-design.docx      # Graded Deliverable 3: SAD (3 Marks)
+├── 03-sprints/                                    # Agile Governance & Sprints (Items 5 & 6)
+│   ├── sprint-1-reconstructed.docx                # Graded Deliverable 5: Sprint 1 Reconstructed (3 Marks)
+│   └── sprint-2-interim.docx                      # Graded Deliverable 6: Sprint 2 Interim (3 Marks)
+├── 04-testing/                                    # Testing Strategy & Test Reports (Items 2, 7 & 8)
+│   ├── software-test-plan.docx                    # Graded Deliverable 2: STP (2 Marks)
+│   ├── unit-test-report.docx                      # Graded Deliverable 7: Unit Test Report (4 Marks)
+│   └── system-test-report.docx                    # Graded Deliverable 8: System Test Report (3 Marks)
+├── 05-devops/                                     # DevOps Tool Adoption (Item 9)
+│   └── devops-tool-adoption.docx                  # Graded Deliverable 9: DevOps Adoption Report (3 Marks)
+├── technical/                                     # Supporting Technical Engineering Guides
+│   ├── requirements-traceability-matrix.md        # Technical RTM mapping SRS to backend code & tests
+│   └── mlops-guide.md                             # Operational engineering guide for MLflow & CI
+└── reports/                                       # Repository Housekeeping & Verification
+    └── documentation-consolidation-report.md      # Final audit report of repository consolidation
+```
 
-### DevOps & Continuous Integration
-- Tool adoption and practice evidence: [DevOps Tool Adoption](05-devops/devops-tool-adoption.docx).
-- Local MLflow server & GitHub Actions setup: [MLOps Engineering Guide](05-devops/mlops-guide.md).
+---
+
+## 3. Supporting Technical Documentation
+
+In addition to the graded academic deliverables, two supporting engineering guides are maintained in [`technical/`](technical/):
+
+- [**Requirements Traceability Matrix (RTM)**](technical/requirements-traceability-matrix.md): Bidirectional matrix linking FR-01 through FR-18, NFRs, and Security Requirements directly to Python implementation files and acceptance test functions.
+- [**MLOps & CI/CD Engineering Guide**](technical/mlops-guide.md): Practical technical guide covering the 5-stage GitHub Actions CI architecture, local SQLite/remote MLflow tracking, hierarchical experiment runs, and troubleshooting.
+
+---
+
+## 4. Academic Evidence Boundaries & Status Definitions
+
+- **VERIFIED:** The deliverable is complete, structurally intact, and validated against the repository codebase.
+- **PRESENT WITH GAPS:** The deliverable exists in the repository, but specific evidence boundaries or historical limitations are explicitly disclosed:
+  - **Sprint 1 (Reconstructed):** Labeled as reconstructed candidate scope because original dated Jira sprint activities and standup logs from 19–23 October 2026 were not archived in Jira.
+  - **Sprint 2 (Interim):** Documented as interim delivery scope; CODECRAFT-11 was added mid-sprint, and open review questions remain pending team confirmation.
+  - **Unit Test Report (Draft):** The automated acceptance test suite executes 22 integrated acceptance tests in Pytest (`TC-01` to `TC-22`) with 100% pass rate. However, separate module-level unit tests for individual functions remain unevidenced and are accurately preserved as draft status without fabricated claims.
+  - **System Test Report (Illustrative):** Section 5 contains simulated timings and browser session formats. These are clearly marked as illustrative mock format templates awaiting live measured session logs.
+  - **DevOps Tool Adoption (Evidenced vs. Reported):** Distinguishes verified tool usage (Git, GitHub, GitHub Actions CI, Pytest, MLflow) from planned/reported workflow practices.

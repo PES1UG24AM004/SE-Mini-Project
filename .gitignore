@@ -17,10 +17,8 @@ __pycache__/
 uploads/
 *.log
 
-# Scratch directory (ignore arbitrary temporary scratch files, keep regression test scripts)
-scratch/*
-!scratch/check_viewports.py
-!scratch/test_chrome_regression_checklist.py
+# Scratch directory (temporary scratch workspace)
+scratch/
 
 # Sensitive environment files (allow template .env.example)
 .env
