@@ -237,7 +237,7 @@ Rigorous security audits and hygiene checks were performed:
   - Update root `README.md` with concise overview, architecture, test instructions, and canonical doc links
   - Fix relative links across all markdown documentation files
   - Remove temporary staging folder `docs/docss`
-- **Commit Hash:** `<COMMIT_HASH_PLACEHOLDER>`
+- **Commit Hash:** `8dfc5530fed4cd6aeae6a5043a68537d0592e460`
 - **Author:** `Aarav Yuval B G <aaravyuval@gmail.com>`
 - **Committer:** `Aarav Yuval B G <aaravyuval@gmail.com>`
 
@@ -247,9 +247,10 @@ Rigorous security audits and hygiene checks were performed:
 
 - **Remote Target:** `origin/main` (`https://github.com/PES1UG24AM004/SE-Mini-Project.git`)
 - **Push Method:** GitHub CLI authenticated (`PES1UG24AM004`) over HTTPS
-- **GitHub Commit URL:** `<COMMIT_URL_PLACEHOLDER>`
+- **GitHub Commit URL:** `https://github.com/PES1UG24AM004/SE-Mini-Project/commit/8dfc5530fed4cd6aeae6a5043a68537d0592e460`
 - **Remote Synchronization:** Verified local `main` synchronized with `origin/main`.
 - **Remote Asset Check:** All 8 DOCX files and 1 PDF verified present on GitHub remote.
+- **GitHub Actions Run:** [Run 41332247100 (CodeCraft Full Pipeline Verification)](https://github.com/PES1UG24AM004/SE-Mini-Project/actions/runs/41332247100) — **SUCCESS** (all stages passed: compilation, backend resolution, 22 acceptance tests, 15 MLflow tests, smoke test).
 
 ---
 
